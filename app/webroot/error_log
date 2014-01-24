@@ -1,0 +1,20 @@
+[23-Jan-2014 12:10:31 UTC] PHP Fatal error:  Call to a member function show() on a non-object in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 72
+[23-Jan-2014 12:11:19 UTC] PHP Fatal error:  Call to a member function find() on a non-object in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 72
+[23-Jan-2014 12:12:11 UTC] PHP Fatal error:  Class 'PDO' not found in /home/shaadise/public_html/staging/lib/Cake/Model/Datasource/Database/Mysql.php on line 201
+[23-Jan-2014 12:25:21 UTC] PHP Fatal error:  Class 'PDO' not found in /home/shaadise/public_html/staging/lib/Cake/Model/Datasource/Database/Mysql.php on line 201
+[23-Jan-2014 12:29:32 UTC] PHP Fatal error:  Class 'PDO' not found in /home/shaadise/public_html/staging/lib/Cake/Model/Datasource/Database/Mysql.php on line 201
+[23-Jan-2014 12:30:00 UTC] PHP Fatal error:  Class 'PDO' not found in /home/shaadise/public_html/staging/lib/Cake/Model/Datasource/Database/Mysql.php on line 201
+[23-Jan-2014 13:21:51 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 71
+[23-Jan-2014 13:21:53 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 71
+[23-Jan-2014 13:21:55 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 71
+[23-Jan-2014 13:21:56 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 71
+[23-Jan-2014 13:22:21 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 71
+[23-Jan-2014 13:22:24 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 71
+[23-Jan-2014 13:22:35 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 71
+[23-Jan-2014 13:23:43 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 71
+[23-Jan-2014 13:23:44 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 71
+[23-Jan-2014 13:23:46 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 71
+[23-Jan-2014 13:23:47 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 71
+[24-Jan-2014 07:27:08 UTC] PHP Fatal error:  Call to undefined function saveusers() in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 60
+[24-Jan-2014 07:27:13 UTC] PHP Fatal error:  Call to undefined function saveusers() in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 60
+[24-Jan-2014 07:27:26 UTC] PHP Fatal error:  Call to undefined function saveusers() in /home/shaadise/public_html/staging/app/Controller/HomeController.php on line 60
