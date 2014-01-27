@@ -33,6 +33,21 @@
             return regex.test(email);
         }
         $(document).ready(function () {
+		
+			//setting height of inner content
+			function setHeight()
+			{
+				var height = window.innerHeight;
+				console.log("height:"+height);
+				$('#innerContent').css(
+				{'height':height-105+'px'});
+			}
+			setHeight();
+			
+			//end of setting height
+			
+			$(window).on('resize',function(){ setHeight(); });
+			
             $('#email').keyup(function () {
                 var email = $('#email').val();
 
@@ -105,40 +120,42 @@
 <body>
 
     <div id="primaryContainer" class="primaryContainer clearfix">
-        <img id="image" src="img/header_bg.png" class="image" />
-        <img id="image1" src="img/logo.png" class="image" />
-        <img id="image2" src="img/getbeta_hover.png" class="image" />
-        <p id="text">
-            <span id="textspan">Beautiful &amp; Simple</span>
-            <br />
-        </p>
-        <p id="text1">
-            <span id="textspan1">Wedding Invites</span>
-            <br />
-        </p>
-        <div class="col-xs-12 align_center">
-            <button value="" id="beta_invite" onclick="show_form();"></button>
-        </div>
-        <div id="form" class="email_form">
-            <input type="text" name="email" placeholder="Email" id="email" class="email" autocomplete="off">
-            <button id="send_email" class="send_email"></button>
-        </div>
-        <div class="clo-xs-12 align_center" id="preloader" style="display:none;">
-            <img src="img/preloader (1).gif" />
-        </div>
-        <div class="clo-xs-12 align_center">
-            <p id='welcome_message' style="display:none;">
-                Awesome! Keep a check on your mailbox.
-            </p>
-			<p id='exist_message' style="display:none;">
-                You have already register.
-            </p>
-        </div>
-        <p id="text2">
-            <span id="textspan2">We are currently in the process of building this incredible and simple to use system to create wedding invites.<br />If you wish to be amongst the first few lucky ones to get the FREE access, send us your details.</span>
-            <br
-            />
-        </p>
+		<div id="innerContent">
+			<img id="image" src="img/header_bg.png" class="image" />
+			<img id="image1" src="img/logo.png" class="image" />
+			<img id="image2" src="img/getbeta_hover.png" class="image" />
+			<p id="text">
+				<span id="textspan">Beautiful &amp; Simple</span>
+				<br />
+			</p>
+			<p id="text1">
+				<span id="textspan1">Wedding Invites</span>
+				<br />
+			</p>
+			<div class="col-xs-12 align_center">
+				<button value="" id="beta_invite" onclick="show_form();"></button>
+			</div>
+			<div id="form" class="email_form">
+				<input type="text" name="email" placeholder="Email" id="email" class="email" autocomplete="off">
+				<button id="send_email" class="send_email"></button>
+			</div>
+			<div class="clo-xs-12 align_center" id="preloader" style="display:none;">
+				<img src="img/preloader (1).gif" />
+			</div>
+			<div class="clo-xs-12 align_center">
+				<p id='welcome_message' style="display:none;">
+					Awesome! Keep a check on your mailbox.
+				</p>
+				<p id='exist_message' style="display:none;">
+					You have already register.
+				</p>
+			</div>
+			<p id="text2">
+				<span id="textspan2">We are currently in the process of building this incredible and simple to use system to create wedding invites.<br />If you wish to be amongst the first few lucky ones to get the FREE access, send us your details.</span>
+				<br
+				/>
+			</p>
+		</div>
         <div id="box" class="clearfix">
             <p id="text3">
                 Copyright 2014 Shaadi Season
