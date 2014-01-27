@@ -29,13 +29,13 @@
 				</tr>
 				<tr>
 					<td>
-						<p class="title" style="font-weight:bold;font-size:17px; padding-bottom:28px;  margin:0;">Whats next </p>
-						<p style="font-size:17px; padding-bottom:28px;  margin:0;">When were ready for you, well send an invitation with a registration URL, it could be about 2- 4 weeks before this arrives.</p>
+						<p class="title" style="font-weight:bold;font-size:17px; padding-bottom:28px;  margin:0;">What's next </p>
+						<p style="font-size:17px; padding-bottom:28px;  margin:0;">When we're ready for you, well send an invitation with a registration URL, it could be about 2- 4 weeks before this arrives.</p>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<p class="title" style="font-weight:bold;font-size:17px; padding-bottom:28px;  margin:0;">Whyd we create ShaadiSeason.com?</p>
+						<p class="title" style="font-weight:bold;font-size:17px; padding-bottom:28px;  margin:0;">Why'd we create ShaadiSeason.com?</p>
 						<p style="font-size:17px; padding-bottom:28px;  margin:0;">Our vision is simple. We believe wedding is a beautify affair and invitation cards should also be. Many of us still scan and send our paper cards to our friends, which is not cool, so we created this service where you can not only create gorgious designer invites but also an awesome website of your wedding, and that too in a matter of minutes.</p>
 
 						<p style="font-size:17px; padding-bottom:28px;  margin:0;">Design matters; and we hope you also feel the same way.</p>
