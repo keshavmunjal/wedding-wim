@@ -123,14 +123,14 @@
 }
 
 #beta_invite {
-		background:url(../img/getbeta_normal.png);
+		background:url(../img/getbeta_normal1.png);
     width: 365px;
     height: 90px;
     margin: 29px auto auto;
     border:none;
 		outline:0;
 }
-#beta_invite:hover{background:url(../img/getbeta_btn2.png);background-position-y: -2px;}
+#beta_invite:hover{background-position-y: 96px;}
 #box {
     float: none;
     height: 105px;
@@ -168,8 +168,8 @@
 }
 
 .email_form{width: 395px; margin: 0px auto; display:none;}
-.send_email{width: 115px;height: 80px;margin-top: 3px;cursor: pointer;outline: 0;background: url(../img/send_btn.png);border: 					none;outline: 0;background-size: 96%;}
-.send_email:hover{background:url(../img/send_btn2.png);background-size: 96%;}
+.send_email{width: 115px;height: 76px;margin-top: 3px;cursor: pointer;outline: 0;background: url(../img/send_btn1.png);border: 					none;outline: 0;background-size: 96%;}
+.send_email:hover{background-size: 96%;background-position-y: 80px;}
 .email{display: block;width: 280px;height: 60px;margin-top: 8px;float: left;padding: 6px 12px;font-size: 20px;line-height: 1.428571429;color: #555555;vertical-align: middle;background-color: #ffffff;background-image: none;border: 1px solid #cccccc;
 border-radius: 4px;-webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; box-shadow: 0px 7px 0px #007bcb;-webkit-box-shadow: 0px 4px 0px #007bcb;-moz-box-shadow: 0px 7px 0px #007bcb;outline:0;}
 #welcome_message{color:#32ff00;font-size:16px;font-weight:bold;margin-top:10px;}
