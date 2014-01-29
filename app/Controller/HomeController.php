@@ -56,26 +56,30 @@ class HomeController extends AppController {
 	}
 	public function sendInvite() {
 	
-		$email = $_POST['email'];
-		
-		$Email = new CakeEmail();
-		$Email->template('welcome')
-			->emailFormat('html')
-			->to($email)
-			->subject('Welcome')
-			->from('ShaadiSeason@shaadiseason.com')
-			->send();
-			
-		//$Email1 = new CakeEmail();
-		//$Email1->template('userinfo')
-		//	->viewVars(array('email' => $email))
-		//	->emailFormat('html')
-		//	->to('ruchika.arora@gmail.com')
-		//	->subject('Register Info')
-		//	->from('shadi@shaadiseason.com')
-		//	->send();
+		echo $result = $this->saveusers($_POST['email']);		
+		if($result=='Success')
+		{
+			$email = $_POST['email'];	
 				
-		echo $this->saveusers($email);exit;
+			$Email = new CakeEmail();	
+			$Email->template('welcome')	
+				->emailFormat('html')	
+				->to($email)	
+				->subject('Welcome')	
+				->from('ShaadiSeason@shaadiseason.com')	
+				->send();	
+					
+			$Email1 = new CakeEmail();	
+			$Email1->template('userinfo')	
+				->viewVars(array('email' => $email))	
+				->emailFormat('html')	
+				->to('ruchika.arora@gmail.com')	
+				->subject('Register Info')	
+				->from('shadi@shaadiseason.com')	
+				->send();		
+		}
+				
+		exit;
 	}
 	
 	public function showusers(){
