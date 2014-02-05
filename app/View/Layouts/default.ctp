@@ -27,22 +27,40 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		<?php //echo $title_for_layout; ?>
 		Shaadi Season
 	</title>
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<!-- Latest compiled and minified JavaScript --> 
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script> 
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>	
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js"></script>
 	<?php
 		echo $this->Html->meta('icon');
-
-		//echo $this->Html->css('cake.generic');
-
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
+		echo $this->Html->css('custom');
+		//echo $this->Html->script('map');
+		echo $this->Html->script('jquery.validate.min');
 	?>
+	
+
+
 </head>
 <body>
 	<div id="container">
 		<!--<div id="header">
 			<h1><?php //echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
 		</div>-->
-		<div id="content">
+		<div id="main-content">
 
 			<?php echo $this->Session->flash(); ?>
 
@@ -57,6 +75,9 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 			?>
 		</div>-->
 	</div>
-	<?php //echo $this->element('sql_dump'); ?>
+	<?php //echo $this->element('sql_dump'); 
+		/////////// Custom JavaScript///////////
+		echo $this->Html->script('custom');
+	?>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 
-define('base_url','http://www.shaadiseason.in/staging/');
+define('base_url','http://localhost/wedding-wim/');
 /**
  * This is core configuration file.
  *

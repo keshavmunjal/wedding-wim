@@ -56,30 +56,26 @@ class HomeController extends AppController {
 	}
 	public function sendInvite() {
 	
-		echo $result = $this->saveusers($_POST['email']);		
-		if($result=='Success')
-		{
-			$email = $_POST['email'];	
+		$email = $_POST['email'];
+		
+		$Email = new CakeEmail();
+		$Email->template('welcome')
+			->emailFormat('html')
+			->to($email)
+			->subject('Welcome')
+			->from('ShaadiSeason@shaadiseason.com')
+			->send();
+			
+		//$Email1 = new CakeEmail();
+		//$Email1->template('userinfo')
+		//	->viewVars(array('email' => $email))
+		//	->emailFormat('html')
+		//	->to('ruchika.arora@gmail.com')
+		//	->subject('Register Info')
+		//	->from('shadi@shaadiseason.com')
+		//	->send();
 				
-			$Email = new CakeEmail();	
-			$Email->template('welcome')	
-				->emailFormat('html')	
-				->to($email)	
-				->subject('Welcome')	
-				->from('ShaadiSeason@shaadiseason.com')	
-				->send();	
-					
-			$Email1 = new CakeEmail();	
-			$Email1->template('userinfo')	
-				->viewVars(array('email' => $email))	
-				->emailFormat('html')	
-				->to('ruchika.arora@gmail.com')	
-				->subject('Register Info')	
-				->from('shadi@shaadiseason.com')	
-				->send();		
-		}
-				
-		exit;
+		echo $this->saveusers($email);exit;
 	}
 	
 	public function showusers(){
@@ -98,8 +94,8 @@ class HomeController extends AppController {
 	public function saveusers($email){
 	
 		
-		$this->loadModel('UserModel');
-		$check = $this->UserModel->find('first',array('conditions'=>array('email'=>$email)));
+		$this->loadModel('User');
+		$check = $this->User->find('first',array('conditions'=>array('email'=>$email)));
 		if($check)
 		{
 			return "AlreadyExists";
@@ -107,7 +103,7 @@ class HomeController extends AppController {
 		else
 		{
 			$newData = array('email' => $email);
-			$a = $this->UserModel->save($newData);
+			$a = $this->User->save($newData);
 			return "Success";
 		}
 	}
