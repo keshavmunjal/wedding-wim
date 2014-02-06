@@ -4,8 +4,7 @@
 		$('.editable').addClass('hide');
 		$('.edit_text').click(function(){
 			$('#'+this.id).addClass('hide');
-			var id = this.id.replace('span', '');
-			$('.editable').removeClass('show');
+			var id = this.id.replace('span', '');			
 			$('#input'+id).val($(this).html());
 			$('#input'+id).removeClass('hide').focus();						
 		});
@@ -13,14 +12,13 @@
 			var id = this.id.replace('input', '');
 			$('#span'+id).html(this.value);
 			$('#'+this.id).addClass('hide');
-			//$('.editable').removeClass('show');
 			$('.edit_text').removeClass('hide');
 					
 		});
 		$('.event').click(function(){
 				var id = this.id;
-				$('.edit_event').removeClass('show');
-				$('.edit_'+id).addClass('show');
+				$('.edit_event').addClass('hide');
+				$('.edit_'+id).removeClass('hide');				
 				$('.event').removeClass('border-blue');
 				$('.event').addClass('border-gray');
 				$('#'+id).removeClass('border-gray');	
@@ -83,10 +81,10 @@ function initialize_map(id) {
                     <div class="up-textContainer"> <em class="edit_event edit_event_<?= $_GET['id']+1;?> hide">Upload Photo</em> <span class="upload-photo"> <img src="../img/Wendills.jpg" class="img-circle img-responsive center-align main-template-image"> </span> </div>
                     <hgroup class="template-heading">
                       <h2><span class="edit_text" id="span_event_name_<?= $_GET['id']+1;?>">Event Name</span>
-												<input name="event_name_<?= $_GET['id']+1;?>" id="input_event_name_<?= $_GET['id']+1;?>" class="editable event_text hide">
+												<input name="event_name_<?= $_GET['id']+1;?>" id="input_event_name_<?= $_GET['id']+1;?>" class="editable event_text hide wedding">
 											</h2>
                       <h3>
-                        <input type="text" id="datepicker_<?= $_GET['id']+1;?>" class="datepicker black" placeholder="Event Date"/>
+                        <input type="text" id="datepicker_<?= $_GET['id']+1;?>" class="datepicker black wedding" placeholder="Event Date"/>
                       </h3>
                     </hgroup>
                     <div class="up-textContainer cal-text-gray"> <em >Add to calendar</em>
@@ -95,7 +93,7 @@ function initialize_map(id) {
                     <div class="horz-border"></div>
                     <img src="../img/torino_google-map.png" class="img-circle  center-align map-image" id="<?= $_GET['id']+1;?>">
 										<div class="zoom_map" id="zoom_map_<?= $_GET['id']+1;?>">
-											<textarea id="address<?= $_GET['id']+1;?>" type="textbox" class="address_input"></textarea>												
+											<textarea id="address<?= $_GET['id']+1;?>" type="textbox" class="address_input wedding"></textarea>												
 											<div id="map_canvas_<?= $_GET['id']+1;?>" class="map_canvas"></div>
 											<input type="button" value="save" class="btn btn-info save_address" />
 										</div>
@@ -107,7 +105,7 @@ function initialize_map(id) {
                       <br>
                     </p>
                     <p> RSVP: <span class="edit_text" id="span_rsvp_<?= $_GET['id']+1;?>">Contact no.</span>
-											<input name="rsvp_<?= $_GET['id']+1;?>" id="input_rsvp_<?= $_GET['id']+1;?>" class="editable event_text hide">
+											<input name="rsvp_<?= $_GET['id']+1;?>" id="input_rsvp_<?= $_GET['id']+1;?>" class="editable event_text hide wedding">
 										</p>
                     </address>
                     <div class=" phone-direction  col-md-5 col-md-offset-2">

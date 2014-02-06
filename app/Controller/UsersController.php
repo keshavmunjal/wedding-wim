@@ -109,6 +109,9 @@ class UsersController extends AppController {
 	public function registers(){
 	
 	}
+	public function step1(){
+		//$this->layout = 'ajax';
+	}
 	public function step2(){
 	
 	}
@@ -116,6 +119,7 @@ class UsersController extends AppController {
 	
 	}
 	public function new_event(){
-	
+		$this->layout = 'ajax';
+		$this->register = 'new_event';
 	}
 }

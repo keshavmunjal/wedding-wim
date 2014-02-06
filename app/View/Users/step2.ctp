@@ -15,12 +15,9 @@
 		$('.editable').addClass('hide');
 		$('.edit_text').click(function(){
 			$('#'+this.id).addClass('hide');
-			var id = this.id.replace('span', '');
-			$('.editable').removeClass('show');
+			var id = this.id.replace('span', '');			
 			$('#input'+id).val($(this).html());
-			$('#input'+id).removeClass('hide').focus();
-			//$('#input'+id).addClass('show').focus();
-			
+			$('#input'+id).removeClass('hide').focus();			
 		});
 		$('.title_weds').focus(function(){
 			console.log(this.id);
@@ -39,9 +36,8 @@
 		});
 		$('.event').click(function(){
 				var id = this.id;
-				$('.edit_event').removeClass('show');
-				$('.edit_'+id).addClass('show');
-				$('.edit_'+id).addClass('show');
+				$('.edit_event').addClass('hide');
+				$('.edit_'+id).removeClass('hide');				
 				$('.event').removeClass('border-blue');
 				$('.event').addClass('border-gray');
 				$('#'+id).removeClass('border-gray');	
@@ -119,12 +115,13 @@
 					data:data,
 					type:"POST",
 					beforeSend:function(){
+						$('#publish').html('Publishing..');
 						$('#preloader').css('display','block');								
 					},
 					success: function(msg){
-						//$('body').html(msg); return;
-						console.log(msg);
-						$('#preloader').css('display','block');								
+						//$('body').html(msg); return;						
+						$('#preloader').css('display','none');	
+						$('#publish').html('Published');
 						window.location.href = "step3";
 						
 					}
@@ -324,7 +321,7 @@
 										</div>
                     <address>
                     <p id="add_2">Maharaja Grand Banquets<br>
-                      A6.28 Paschim Vikar<br>
+                      A6.28 Paschim Vihar<br>
                       New Delhi<br>
                       110076<br>
                       <br>
@@ -372,7 +369,7 @@
 										</div>
                     <address>
                     <p id="add_3">Maharaja Grand Banquets<br>
-                      A6.28 Paschim Vikar<br>
+                      A6.28 Paschim Vihar<br>
                       New Delhi<br>
                       110076<br>
                       <br>
