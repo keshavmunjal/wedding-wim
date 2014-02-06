@@ -64,14 +64,15 @@ class EventsController extends AppController {
 				$data['Events']['created_date'] = date('Y-m-d H:i:s');
 				$res = $this->Events->save($data);
 			}
-			if ($res) {
+			/*if ($res) {
 				$this->Session->setFlash(__('The event has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The event could not be saved. Please, try again.'));
-			}
+			}*/
 		}
 		echo $this->Users->id;
+		exit;
 	}
 
 /**
