@@ -22,7 +22,14 @@
 			//$('#input'+id).addClass('show').focus();
 			
 		});
+		$('.title_weds').focus(function(){
+			console.log(this.id);
+			
+			$('.edit-text-same').removeClass('edit-keyword');
+			$("#"+this.id).next('span').addClass('edit-keyword');
+		});
 		$('.editable').focusout(function(){
+			$('.edit-text-same').removeClass('edit-keyword');
 			var id = this.id.replace('input', '');
 			$('#span'+id).html(this.value);
 			$('#'+this.id).addClass('hide');
@@ -209,9 +216,17 @@
     <header id="enter-details" class="row">
       <div class="col-md-8  center-align ">
         <hgroup class="row text-center" >				
-          <h3 class="col-md-4" id="man-name"><span id="span_groom" class="edit_text wedding">Kapil</span><input type="text" name="groom"   id="input_groom" class="editable title_weds" value="Kapil"></h3>
+          <h3 class="col-md-4" id="man-name">
+			<span id="span_groom" class="edit_text wedding">Kapil</span>
+			<input type="text" name="groom"   id="input_groom" class="editable title_weds" value="Kapil">
+			<span class="edit-text-same"></span>
+		  </h3>
           <h3 class="col-md-4" id="weds"><span>Weds</span></h3>
-          <h3 class="col-md-4" id="woman-name"><span id="span_bride" class="edit_text wedding">Sonali</span><input type="text" name="bride"  id="input_bride" class="editable title_weds" value="Sonali"></h3>
+          <h3 class="col-md-4" id="woman-name">
+			<span id="span_bride" class="edit_text wedding">Sonali</span>
+			<input type="text" name="bride"  id="input_bride" class="editable title_weds" value="Sonali">
+			<span class="edit-text-same"></span>
+		  </h3>
         </hgroup>
         <div class="row">
           <h4 class="col-md-12 text-center"><input name="wedding_date" id="wedding_date" class="datepicker" value="Monday 14 April 2013"></h4>
