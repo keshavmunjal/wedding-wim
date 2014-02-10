@@ -14,6 +14,10 @@
 		$( "#wedding_date" ).datepicker({dateFormat: 'DD dd MM yy'});
 		$('.editable').addClass('hide');
 		$('.edit_text').click(function(){
+			
+			//var wid = $(this).width();
+			//$('#input'+id).width(wid);
+			
 			$('#'+this.id).addClass('hide');
 			var id = this.id.replace('span', '');			
 			$('#input'+id).val($(this).html());
@@ -92,6 +96,8 @@
 				var id = this.id.replace('save_', '');
 				var address = $('#address'+id).val();
 				$('#add_'+id).text(address);
+				$(".zoom_map").hide();
+				//event.stopPropagation();
 		});
 
 		$('#publish').on('click', function() {	
@@ -211,7 +217,9 @@
 <div role="main" id="main" class=" clearfix" >
   <div class="container">
     <header id="enter-details" class="row">
-      <div class="col-md-8  center-align ">
+	
+	<!-- <div class="col-md-8  center-align ">-->
+      <div class="center-align ">
         <hgroup class="row text-center" >				
           <h3 class="col-md-4" id="man-name">
 			<span id="span_groom" class="edit_text wedding">Kapil</span>
@@ -256,10 +264,10 @@
                     <div class="up-textContainer"> <em class="edit_event edit_event_1 hide" id="upload">Upload Photo</em> <span class="upload-photo"> <img src="../img/Wendills.jpg" class="img-circle img-responsive center-align main-template-image"> </span> </div>
                     <hgroup class="template-heading">
                       <h2><span class="edit_text" id="span_event_name_1">Engagement</span>
-												<input type="text" name="event_name[]" id="input_event_name_1" class="editable event_text wedding" value="Engagement">
+												<input type="text" name="event_name[]" id="input_event_name_1" class="editable event_text wedding text-center" value="Engagement">
 											</h2>
                       <h3>
-                        <input type="text" name="datepicker[]" id="datepicker_1" class="datepicker black wedding" value="Monday 14 April 2013" value=""/>
+                        <input type="text" name="datepicker[]" id="datepicker_1" class="datepicker wedding" value="Monday 14 April 2013" value=""/>
                       </h3>
                     </hgroup>
                     <div class="up-textContainer cal-text-gray"> <em>Add to calendar</em>
@@ -271,18 +279,19 @@
 											<textarea name="address[]" id="address1" type="textbox" class="address_input wedding">address1</textarea>												
 											<div id="map_canvas_1" class="map_canvas"></div>
 											<input type="button" value="save" class="btn btn-info save_address" id="save_1"/>
-										</div>						
-                    <address>
-                    <p id="add_1">Maharaja Grand Banquets<br>
-                      A6.28 Paschim Vihar<br>
-                      New Delhi<br>
-                      110076<br>
-                      <br>
-                    </p>
-                    <p> RSVP: <span class="edit_text" id="span_rsvp_1">8989893234</span>
-											<input type="text" name="rsvp[]" id="input_rsvp_1" class="editable event_text wedding" value="8989893234">
-										</p>
-                    </address>
+										</div>	
+										<div class="row">
+											<address class="col-md-4 center-align">
+											<p id="add_1">Maharaja Grand Banquets
+												A6.28 Paschim Vihar
+												New Delhi
+												110063
+											</p>
+											<p> RSVP: <span class="edit_text" id="span_rsvp_1">8989893234</span>
+												<input type="text" name="rsvp[]" id="input_rsvp_1" class="editable event_text wedding" value="8989893234">
+											</p>
+											</address>
+										</div>
                     <div class=" phone-direction  col-md-5 col-md-offset-2">
                       <p>Get direction on phone <span class="glyphicon glyphicon-phone "></span> </p>
                     </div>
@@ -303,10 +312,10 @@
 										<span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span> </div>
                     <hgroup class="template-heading">
                       <h2><span class="edit_text" id="span_event_name_2">Mehndi</span>
-												<input type="text" name="event_name[]" id="input_event_name_2" class="editable event_text wedding" value="Mehndi">
+												<input type="text" name="event_name[]" id="input_event_name_2" class="editable event_text wedding text-center" value="Mehndi">
 											</h2>
                       <h3>
-                        <input type="text" name="datepicker[]" id="datepicker_2" class="datepicker black wedding" value="Monday 14 April 2013"/>
+                        <input type="text" name="datepicker[]" id="datepicker_2" class="datepicker wedding" value="Monday 14 April 2013"/>
                       </h3>
                     </hgroup>
 										<div class="up-textContainer cal-text-gray"> <em>Add to calendar</em>
@@ -319,17 +328,20 @@
 											<div id="map_canvas_2" class="map_canvas"></div>
 											<input type="button" value="save" class="btn btn-info save_address" id="save_2"/>
 										</div>
-                    <address>
-                    <p id="add_2">Maharaja Grand Banquets<br>
-                      A6.28 Paschim Vihar<br>
-                      New Delhi<br>
-                      110076<br>
-                      <br>
+                    
+					
+							<div class="row">					
+									<address class="col-md-4 center-align">
+                    <p id="add_2">Maharaja Grand Banquets
+                      A6.28 Paschim Vihar
+                      New Delhi
+                      110076                      
                     </p>
                     <p> RSVP: <span class="edit_text" id="span_rsvp_2">8989893234</span>
 											<input type="text" name="rsvp[]" id="input_rsvp_2" class="editable event_text wedding" value="8989893234">
 										</p>
                     </address>
+							</div>
                     <div class=" phone-direction  col-md-5 col-md-offset-2">
                       <p>Get direction on phone <span class="glyphicon glyphicon-phone "></span> </p>
                     </div>
@@ -351,10 +363,10 @@
                     <span class="upload-photo"> <img src="../img/Indian-Bridal-Makeup-2.jpg" class="img-circle img-responsive center-align main-template-image-bigSize"> </span> </div>
                     <hgroup class="template-heading">
                       <h2><span class="edit_text" id="span_event_name_3">Wedding</span>
-												<input type="text" name="event_name[]" id="input_event_name_3" class="editable event_text wedding" value="Wedding">
+												<input type="text" name="event_name[]" id="input_event_name_3" class="editable event_text wedding text-center" value="Wedding">
 											</h2>
                       <h3>
-                        <input type="text" name="datepicker[]" id="datepicker_3" class="datepicker black wedding" value="Monday 14 April 2013"/>
+                        <input type="text" name="datepicker[]" id="datepicker_3" class="datepicker wedding" value="Monday 14 April 2013"/>
                       </h3>
                     </hgroup>
 										<div class="up-textContainer cal-text-gray"> <em>Add to calendar</em>
@@ -367,17 +379,18 @@
 											<div id="map_canvas_3" class="map_canvas"></div>
 											<input type="button" value="save" class="btn btn-info save_address" id="save_3"/>
 										</div>
-                    <address>
-                    <p id="add_3">Maharaja Grand Banquets<br>
-                      A6.28 Paschim Vihar<br>
-                      New Delhi<br>
-                      110076<br>
-                      <br>
-                    </p>
-                    <p> RSVP: <span class="edit_text" id="span_rsvp_3">8989893234</span>
-											<input type="text" name="rsvp[]" id="input_rsvp_3" class="editable event_text wedding" value="8989893234">
-										</p>
-                    </address>
+                    <div class="row">					
+											<address class="col-md-4 center-align">
+												<p id="add_2">Maharaja Grand Banquets
+													A6.28 Paschim Vihar
+													New Delhi
+													110076                      
+												</p>
+												<p> RSVP: <span class="edit_text" id="span_rsvp_2">8989893234</span>
+													<input type="text" name="rsvp[]" id="input_rsvp_2" class="editable event_text wedding" value="8989893234">
+												</p>
+											</address>
+										</div>
                     <div class=" phone-direction  col-md-5 col-md-offset-2">
                       <p>Get direction on phone <span class="glyphicon glyphicon-phone "></span> </p>
                     </div>

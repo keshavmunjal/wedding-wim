@@ -1,3 +1,4 @@
+
 body {
 	background:url(../img/header-slider-1.jpg) no-repeat center top;
 	background-size:100%;
@@ -802,8 +803,8 @@ right:0;  z-index:999;}
 #wedding_date{color: rgba(255, 255, 255, 0.5) !important;}
 .title_weds{color:#fff;background: none;border: none;width: 225px;}
 .title_weds:focus{outline:0;background:url(../img/Step2a1.png) no-repeat;background-size:100%;}
-.event_text{color: black;background: none;border: none;width: 225px;}
-.datepicker{width:410px;text-align:center;color: black;background: none;border: none;}
+.event_text{background: none;border: none;width: 225px;}
+.datepicker{width:410px;text-align:center;color: #969696;background: none;border: none;}
 #preloader{position: absolute;right: 38px;top: 9px;display:none;}
 .pr-button:active,.pr-button:hover,.pr-button:focus{background: none!important;color: white!important;}
 .ui-datepicker-calendar{
@@ -975,7 +976,7 @@ left:0 right:0;
 }
 
 .edit-keyword::after{
-content: "Edit Name";
+content: "Enter Name";
 color: #275cf3;
 width: 75px;
 position: absolute;
