@@ -378,7 +378,7 @@ var base_url  = '<?php echo base_url;?>';
           <p class="">Your Current Theme</p>
           <h3 class=""> <?php echo $themeDetails['theme_name']?> </h3>
           <p class=" "> <a href="#">Change Theme</a> </p>
-		  <input type="text" id="themeId" name="themeId" value="<?php echo $themeId;?>">
+		  <input type="hidden" id="themeId" name="themeId" value="<?php echo $themeId;?>">
         </div>
       </aside>
     </div>
