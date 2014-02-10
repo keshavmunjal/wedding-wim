@@ -4,9 +4,117 @@
 <title>Shadi Season Step-2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript">
-
+var base_url  = '<?php echo base_url;?>';
 		
 	$(document).ready(function(){
+	
+	/***validation**/
+	$('#form').validate({
+        rules: {
+            name: {
+                minlength: 3,
+                maxlength: 15,
+                required: true
+            },
+            email: {
+                minlength: 3,
+                email: true,
+                required: true
+            },
+			password: {
+                minlength: 4,
+                required: true
+            },
+			url:{
+				required: true
+			},
+        },
+		messages: {
+			name: {
+				required:"Please Enter Your Name"
+			},
+			email: {
+				required:"Please Provide Your Email"
+			},
+			password: {
+				minlength:"Please Provide Secure Password",
+				required:"Please Provide Password"
+			},
+			
+		},
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            if(element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+        },
+		 submitHandler: function(form) {
+			//calling function for submitting data
+			saveUser();
+		}
+    });
+	
+	/*****end*****/
+	
+	function saveUser()
+	{
+		
+		var data = 'user_name='+$("#name").val()+'&email='+$("#email").val()+'&password='+$("#password").val()+'&url='+$("#url").val();
+		$.post(base_url+'users/create',data,function(msg){
+			var userId = msg;
+			$("#my_modal").modal('hide');
+			saveEvent(userId);
+			
+		});
+	}
+	
+	function saveEvent(userId)
+	{
+			var validate = true;
+			var groom = $('#input_groom').val();			
+			var bride = $('#input_bride').val();
+			localStorage.setItem("url", $('#url').val());
+			$('input.wedding').each(function() {
+				if(this.value==''){
+					validate = false;
+					alert('Please fill all the details.');
+					return false;
+				}			
+			});			
+			if(validate){
+				var data = 'userId='+userId+'&user_name='+groom+'&bride_name='+bride+'&'+$('#wedding').serialize();
+				var base_url = 'http://localhost/wedding-wim/';
+				console.log(data);
+				$.ajax({
+					url:base_url+"events/add_event",
+					data:data,
+					type:"POST",
+					beforeSend:function(){
+						$('#publish').html('Publishing..');
+						$('#preloader').css('display','block');								
+					},
+					success: function(msg){
+						//$('body').html(msg); return;						
+						$('#preloader').css('display','none');	
+						$('#publish').html('Published');
+						window.location.href = "step3";
+						
+					}
+			});
+			};
+	}
+	
+	
+	
 		var geocoder;
 		var map;
 		var last_id = 3;
@@ -100,7 +208,11 @@
 				//event.stopPropagation();
 		});
 
-		$('#publish').on('click', function() {	
+		$('#publish').on('click', function() {
+		
+			//alert("signup first or login");
+			$("#my_modal").modal('show');
+			return;
 			var validate = true;
 			var groom = $('#input_groom').val();			
 			var bride = $('#input_bride').val();
@@ -163,12 +275,69 @@
 </noscript>
 </head>
 <body id="step2" >
-
+	<!--<div class="modal fade bs-modal-lg in" >-->
+	<div class="modal fade bs-modal-lg"  id="my_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title">Sign Up or LogIn</h4>
+		  </div>
+		  <div class="modal-body">
+			<div class="row">
+				<section class="col-md-6">
+					<form role="form" id="form" method="post">
+					 <div class="form-group">
+						<label for="exampleInputEmail1">Name</label>
+						<input name="name" type="text" class="form-control" id="name" placeholder="Enter Name">
+					  </div>
+					  <div class="form-group">
+						<label for="exampleInputEmail1">Email address</label>
+						<input name="email" type="email" class="form-control" id="email" placeholder="Enter Email">
+					  </div>
+					  <div class="form-group">
+						<label for="exampleInputPassword1">Password</label>
+						<input type="password" name="password" class="form-control" id="password" placeholder="New Password">
+					  </div>
+					  <div class="form-group">
+						<label for="exampleInputPassword1">Unique Url</label>
+						<input type="text" name="url" class="form-control" id="url" placeholder="New Password">
+					  </div>
+					  <button type="submit" class="btn btn-default">Register</button>
+					</form>
+				</section>
+				<section class="col-md-6">
+					<form role="form">
+					  <div class="form-group">
+						<label for="exampleInputEmail1">Email address</label>
+						<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+					  </div>
+					  <div class="form-group">
+						<label for="exampleInputPassword1">Password</label>
+						<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+					  </div>
+					  <div class="checkbox">
+						<label>
+						  <input type="checkbox"> Remember me
+						</label>
+					  </div>
+					  <button type="submit" class="btn btn-default">Let me in</button>
+					</form>
+				</section>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Save changes</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 <!-- top navigation and logo -->
 <header role = "banner">
   <div class="container">
     <div class="row">
-      <article class="col-md-6 col-lg-6 col-sm-6"> <img src="../img/logo.png" class="img-responsive" alt="" id="logo"> </article>
+      <article class="col-md-6 col-lg-6 col-sm-6"> <img src="<?php echo base_url;?>img/logo.png" class="img-responsive" alt="" id="logo"> </article>
       <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> <a href="#">Login</a> <a href="#">Register</a> </aside>
     </div>
     <!--end row--> 
@@ -196,7 +365,7 @@
                 <div class="col-md-6 col-xs-6 col-sm-6 ">
                   <button type="button" class="btn btn-default full-width no-bg  pr-button" id="publish">Publish</button>
                 </div>
-								<img src="../img/ajax-loader.gif" id="preloader"/>                
+								<img src="<?php echo base_url;?>img/ajax-loader.gif" id="preloader"/>                
 							</div>
             </div>
           </div>
@@ -207,8 +376,9 @@
       <aside class="row" id="current-theme">
         <div class="col-md-8  center-align" id="theme-status">
           <p class="">Your Current Theme</p>
-          <h3 class=""> Rich Hina </h3>
+          <h3 class=""> <?php echo $themeDetails['theme_name']?> </h3>
           <p class=" "> <a href="#">Change Theme</a> </p>
+		  <input type="text" id="themeId" name="themeId" value="<?php echo $themeId;?>">
         </div>
       </aside>
     </div>
@@ -261,7 +431,7 @@
                   <button type="button" class="btn btn-default deleteEventButton hide edit_event edit_event_1">Delete Event X</button>
                   <div class="col-md-12 text-center">
                     <div class="horz-border"></div>
-                    <div class="up-textContainer"> <em class="edit_event edit_event_1 hide" id="upload">Upload Photo</em> <span class="upload-photo"> <img src="../img/Wendills.jpg" class="img-circle img-responsive center-align main-template-image"> </span> </div>
+                    <div class="up-textContainer"> <em class="edit_event edit_event_1 hide" id="upload">Upload Photo</em> <span class="upload-photo"> <img src="<?php echo base_url;?>img/Wendills.jpg" class="img-circle img-responsive center-align main-template-image"> </span> </div>
                     <hgroup class="template-heading">
                       <h2><span class="edit_text" id="span_event_name_1">Engagement</span>
 												<input type="text" name="event_name[]" id="input_event_name_1" class="editable event_text wedding text-center" value="Engagement">
@@ -274,7 +444,7 @@
                       <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
                     </div>
                     <div class="horz-border"></div>
-                    <img src="../img/torino_google-map.png" class="img-circle  center-align map-image" id="1">
+                    <img src="<?php echo base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image" id="1">
 										<div class="zoom_map" id="zoom_map_1">																						
 											<textarea name="address[]" id="address1" type="textbox" class="address_input wedding">address1</textarea>												
 											<div id="map_canvas_1" class="map_canvas"></div>
@@ -309,7 +479,7 @@
                   <div class="col-md-12 text-center">
                     <div class="horz-border"></div>
                     <div class="up-textContainer"> <em class="edit_event edit_event_2 hide">Upload Photo</em> 
-										<span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span> </div>
+										<span class="upload-photo"> <img src="<?php echo base_url;?>img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span> </div>
                     <hgroup class="template-heading">
                       <h2><span class="edit_text" id="span_event_name_2">Mehndi</span>
 												<input type="text" name="event_name[]" id="input_event_name_2" class="editable event_text wedding text-center" value="Mehndi">
@@ -322,7 +492,7 @@
 											<div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
 										</div>
                     <div class="horz-border"></div>
-                    <img src="../img/torino_google-map.png" class="img-circle  center-align map-image" id="2">
+                    <img src="<?php echo base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image" id="2">
 										<div class="zoom_map" id="zoom_map_2">
 											<textarea name="address[]" id="address2" type="textbox" class="address_input wedding">address2</textarea>												
 											<div id="map_canvas_2" class="map_canvas"></div>
@@ -360,7 +530,7 @@
                   <div class="col-md-12 text-center">
                     <div class="horz-border"></div>
 										<div class="up-textContainer"> <em class="edit_event edit_event_3 hide">Upload Photo</em> 
-                    <span class="upload-photo"> <img src="../img/Indian-Bridal-Makeup-2.jpg" class="img-circle img-responsive center-align main-template-image-bigSize"> </span> </div>
+                    <span class="upload-photo"> <img src="<?php echo base_url;?>img/Indian-Bridal-Makeup-2.jpg" class="img-circle img-responsive center-align main-template-image-bigSize"> </span> </div>
                     <hgroup class="template-heading">
                       <h2><span class="edit_text" id="span_event_name_3">Wedding</span>
 												<input type="text" name="event_name[]" id="input_event_name_3" class="editable event_text wedding text-center" value="Wedding">
@@ -373,7 +543,7 @@
 											<div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
 										</div>
                     <div class="horz-border"></div>
-                    <img src="../img/torino_google-map.png" class="img-circle  center-align map-image" id="3">
+                    <img src="<?php echo base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image" id="3">
 										<div class="zoom_map" id="zoom_map_3">
 											<textarea name="address[]" id="address3" type="textbox" class="address_input wedding">address3</textarea>												
 											<div id="map_canvas_3" class="map_canvas"></div>

@@ -47,16 +47,16 @@ class EventsController extends AppController {
  */
 	public function add_event() {
 		$user = array();
-		$user = $this->Users->create();
-		$user['Users']['user_name'] = $_POST['user_name'];
-		$user['Users']['created_date'] = date('Y-m-d H:i:s');
-		$user['Users']['url'] = $_POST['user_name'].'weds'.$_POST['bride_name'];
-		$this->Users->save($user);	
+		//$user = $this->Users->create();
+		//$user['Users']['user_name'] = $_POST['user_name'];
+		//$user['Users']['created_date'] = date('Y-m-d H:i:s');
+		//$user['Users']['url'] = $_POST['user_name'].'weds'.$_POST['bride_name'];
+		//$this->Users->save($user);	
 		if ($this->request->is('post')) {			
 			for($i=0; $i<$_POST['no_of_events']; $i++){
 				$data = array();
 				$data = $this->Events->create();
-				$data['Events']['user_id'] = $this->Users->id;
+				$data['Events']['user_id'] = $_POST['userId'];
 				$data['Events']['event_title'] = $_POST['event_name'][$i];
 				$data['Events']['event_date'] = '2014-02-03';
 				$data['Events']['venue'] = $_POST['address'][$i];
@@ -71,7 +71,7 @@ class EventsController extends AppController {
 				$this->Session->setFlash(__('The event could not be saved. Please, try again.'));
 			}*/
 		}
-		echo $this->Users->id;
+		//echo $this->Users->id;
 		exit;
 	}
 

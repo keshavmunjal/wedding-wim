@@ -14,6 +14,7 @@ class UsersController extends AppController {
  * @var array
  */
 	public $components = array('Paginator');
+	public $uses = array('Themes','Users');
 
 /**
  * index method
@@ -92,6 +93,20 @@ class UsersController extends AppController {
  * @param string $id
  * @return void
  */
+	public function create()
+	{
+		$user = array();
+		$user = $this->Users->create();
+		$user['Users']['user_name'] = $_POST['user_name'];
+		$user['Users']['email'] = $_POST['email'];
+		$user['Users']['password'] = $_POST['password'];
+		$user['Users']['created_date'] = date('Y-m-d H:i:s');
+		$user['Users']['url'] = $_POST['url'];
+		$this->Users->save($user);
+		echo $this->Users->id;
+		exit;
+	}
+ 
 	public function delete($id = null) {
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
@@ -110,10 +125,25 @@ class UsersController extends AppController {
 	
 	}
 	public function step1(){
-		//$this->layout = 'ajax';
+		if($this->request->is('post'))
+		{
+			$user = $this->request->data;
+			$this->Session->write('Users.themeId', $user['themeId']);
+			exit;
+		}
 	}
 	public function step2(){
 	
+		$themeId = $this->Session->read('Users.themeId');//getting theme for current user
+		if(empty($themeId))
+		{
+			$this->redirect(array("controller" => "Users","action" => "step1"));
+		}
+		$themeDetails = $this->Themes->find('all',array('conditions'=>array('id'=>$themeId)));
+		//pr($themeDetails);exit;
+		$this->set('themeDetails',$themeDetails[0]['Themes']);
+		$this->set('themeId',$themeId);
+		//$this->Session->delete('Users.themeId');//deleting session selected theme off me for production face
 	}
 	public function step3(){
 	

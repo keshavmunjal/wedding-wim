@@ -142,7 +142,7 @@
             </ul>
             <div class="col-md-4 text-right">
               <div class="row">
-                <button type="button" class="btn  btn-info  my-button">Choose This Design</button>
+                <button type="button" class="btn  btn-info  my-button" rel="1">Choose This Design</button>
               </div>
             </div>
           </article>
@@ -215,7 +215,7 @@
             </ul>
             <div class="col-md-4 text-right">
               <div class="row">
-                <button type="button" class="btn  btn-info  my-button">Choose This Design</button>
+                <button type="button" class="btn  btn-info  my-button" rel="0">Choose This Design</button>
               </div>
             </div>
           </article>
@@ -287,7 +287,7 @@
             </ul>
             <div class="col-md-4 text-right">
               <div class="row">
-                <button type="button" class="btn  btn-info  my-button">Choose This Design</button>
+                <button type="button" class="btn  btn-info  my-button" rel="0">Choose This Design</button>
               </div>
             </div>
           </article>
@@ -359,7 +359,7 @@
             </ul>
             <div class="col-md-4 text-right">
               <div class="row">
-                <button type="button" class="btn  btn-info  my-button">Choose This Design</button>
+                <button type="button" class="btn  btn-info  my-button" rel="0">Choose This Design</button>
               </div>
             </div>
           </article>
@@ -431,7 +431,7 @@
             </ul>
             <div class="col-md-4 text-right">
               <div class="row">
-                <button type="button" class="btn  btn-info  my-button">Choose This Design</button>
+                <button type="button" class="btn  btn-info  my-button" rel="0">Choose This Design</button>
               </div>
             </div>
           </article>
@@ -503,7 +503,7 @@
             </ul>
             <div class="col-md-4 text-right">
               <div class="row">
-                <button type="button" class="btn  btn-info  my-button">Choose This Design</button>
+                <button type="button" class="btn  btn-info  my-button" rel="0">Choose This Design</button>
               </div>
             </div>
           </article>
@@ -575,7 +575,7 @@
             </ul>
             <div class="col-md-4 text-right">
               <div class="row">
-                <button type="button" class="btn  btn-info  my-button">Choose This Design</button>
+                <button type="button" class="btn  btn-info  my-button" rel="0">Choose This Design</button>
               </div>
             </div>
           </article>
@@ -647,7 +647,7 @@
             </ul>
             <div class="col-md-4 text-right">
               <div class="row">
-                <button type="button" class="btn  btn-info  my-button">Choose This Design</button>
+                <button type="button" class="btn  btn-info  my-button" rel="0">Choose This Design</button>
               </div>
             </div>
           </article>
@@ -719,7 +719,7 @@
             </ul>
             <div class="col-md-4 text-right">
               <div class="row">
-                <button type="button" class="btn  btn-info  my-button">Choose This Design</button>
+                <button type="button" class="btn  btn-info  my-button" rel="0">Choose This Design</button>
               </div>
             </div>
           </article>
@@ -807,3 +807,17 @@
 <div class="next_prev_arrow"> 
   <!-- Controls --> 
   <a class="left carousel-control" href="#carousel-example-generica" data-slide="prev"> <img src="../img/prev.png"  class="img-responsive"></span> </a> <a class="right carousel-control" href="#carousel-example-generica" data-slide="next"> <img src="../img/next.png"  class="img-responsive"> </a> </div>
+  
+  <script>
+  var base_url = '<?php echo base_url;?>';
+	$(document).ready(function(){
+		$(".my-button").on('click',function(){
+			
+			var themeId = $(this).attr('rel');
+			$.post(base_url+'users/step1','themeId='+themeId,function(res){
+				window.location.href = base_url+'users/step2';
+			});
+		});
+	
+	});
+  </script>
