@@ -1,8 +1,3 @@
-<script>
-	$(document).ready(function(){
-		$('#user-link').val(localStorage.getItem("url"));
-	});
-</script>
 <body id="step3">
 
 <!-- top navigation and logo -->
@@ -10,7 +5,7 @@
   <div class="container">
     <div class="row">
       <article class="col-md-6 col-lg-6 col-sm-6"> <img src="../img/logo.png" class="img-responsive" alt="" id="logo"> </article>
-      <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> Hello Rahul </aside>
+      <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> Hello <?php echo $this->Session->read('user_name')?> </aside>
     </div>
     <!--end row--> 
     
@@ -66,7 +61,7 @@
 
 <form class="form-inline" role="form">
  <em>www.shaadiseason.com/</em>
- <input type="text" class="form-control" id="user-link" placeholder="Rahul" disabled>
+ <input type="text" class="form-control" id="user-link" placeholder="<?php echo $websiteDetails['url']?>" disabled>
   
 </form>
 

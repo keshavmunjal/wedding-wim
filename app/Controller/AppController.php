@@ -37,11 +37,24 @@ class AppController extends Controller {
             'authorize' => array('controller'),
             'loginAction' => array(
                 'controller' => 'Users',
-                'action' => 'step2'
+                'action' => 'step1'//remove this otherwise it will not open LP.
             )
         )        
     );*/
+	public $components = array('Auth'=>array(
+            //'authorize' => 'actions',
+            'actionPath' => 'controllers/',
+            'loginAction' => array(
+                'controller' => 'Users',
+                'action' => 'step1',
+                'plugin' => false,
+               'admin' => false,
+                ),
+             ),'Session','RequestHandler');
+			 
 	public function beforeFilter() {
-    parent::beforeFilter();
-}
+		parent::beforeFilter();
+		$this->Auth->allow();
+		//$this->Auth->unlockedActions = array('users');
+	}
 }

@@ -26,7 +26,18 @@ var base_url  = '<?php echo base_url;?>';
                 required: true
             },
 			url:{
-				required: true
+				required: true,
+				remote: {
+                    url: base_url+'users/checkurl',
+                    type: 'GET',
+                    data:
+					{
+						url: function()
+						{
+							return $('#url').val();
+						}
+					}
+                }
 			},
         },
 		messages: {
@@ -39,6 +50,10 @@ var base_url  = '<?php echo base_url;?>';
 			password: {
 				minlength:"Please Provide Secure Password",
 				required:"Please Provide Password"
+			},
+			url:{
+				required:"Choose a unique url for your site",
+				remote: "This Url is already taken.",
 			},
 			
 		},
@@ -63,12 +78,71 @@ var base_url  = '<?php echo base_url;?>';
 		}
     });
 	
+	
+	/***validation**/
+	$('#loginForm').validate({
+        rules: {
+            loginEmail: {
+				email: true,
+                required: true
+            },
+			loginPassword: {
+                required: true
+            }
+        },
+		messages: {
+			loginEmail: {
+				email:"Please Provide Email",
+				required:"Please Provide Valid Email"
+			},
+			loginPassword: {
+				required:"Please Provide Password"
+			},
+			
+		},
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            if(element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+        },
+		 submitHandler: function(form) {
+			//calling function for submitting data
+			//saveUser();
+			login();
+		}
+    });
+	
 	/*****end*****/
+	
+	
+	function login()
+	{
+		var data = 'username='+$('#loginEmail').val()+'&password='+$('#loginPassword').val();
+		$.post(base_url+'users/login',data,function(res){
+			if(!(res == 'FAIL'))
+			{
+				//alert(res);
+				userId = res;
+				$("#my_modal").modal('hide');
+				saveEvent(userId);
+			}
+		});
+	}
 	
 	function saveUser()
 	{
 		
-		var data = 'user_name='+$("#name").val()+'&email='+$("#email").val()+'&password='+$("#password").val()+'&url='+$("#url").val();
+		var data = 'user_name='+$("#name").val()+'&email='+$("#email").val()+'&password='+$("#password").val()+'&url='+$("#url").val()+'&themeId='+$("#themeId").val();
 		$.post(base_url+'users/create',data,function(msg){
 			var userId = msg;
 			$("#my_modal").modal('hide');
@@ -307,14 +381,14 @@ var base_url  = '<?php echo base_url;?>';
 					</form>
 				</section>
 				<section class="col-md-6">
-					<form role="form">
+					<form role="form" method="post" id="loginForm">
 					  <div class="form-group">
 						<label for="exampleInputEmail1">Email address</label>
-						<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+						<input type="email" name="loginEmail" class="form-control" id="loginEmail" placeholder="Enter email">
 					  </div>
 					  <div class="form-group">
 						<label for="exampleInputPassword1">Password</label>
-						<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+						<input type="password" name="loginPassword" class="form-control" id="loginPassword" placeholder="Password">
 					  </div>
 					  <div class="checkbox">
 						<label>
@@ -326,10 +400,6 @@ var base_url  = '<?php echo base_url;?>';
 				</section>
 			</div>
 		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary">Save changes</button>
-		  </div>
 		</div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
@@ -338,7 +408,7 @@ var base_url  = '<?php echo base_url;?>';
   <div class="container">
     <div class="row">
       <article class="col-md-6 col-lg-6 col-sm-6"> <img src="<?php echo base_url;?>img/logo.png" class="img-responsive" alt="" id="logo"> </article>
-      <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> <a href="#">Login</a> <a href="#">Register</a> </aside>
+      <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> <a href="#my_modal" data-toggle="modal" data-target="#my_modal">Login</a> <a href="#my_modal" data-toggle="modal" data-target="#my_modal">Register</a> </aside>
     </div>
     <!--end row--> 
     

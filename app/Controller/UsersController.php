@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
 /**
  * Users Controller
  *
@@ -14,13 +15,41 @@ class UsersController extends AppController {
  * @var array
  */
 	public $components = array('Paginator');
-	public $uses = array('Themes','Users');
+	public $uses = array('Themes','Users','Microwebsites');
 
 /**
  * index method
  *
  * @return void
  */
+	/* public function beforeFilter() {
+		parent::beforeFilter();
+		 $this->Auth->fields = array(
+		 'username' => 'username', 
+		 'password' => 'password'
+		 );
+	  } */
+	public function login() {
+		if ($this->RequestHandler->isAjax())
+		{
+			$email = $this->request->data['username'];
+			$password = $this->Auth->password($this->request->data['password']);
+			$userDetails = $this->Users->find('all',array('conditions'=>array('email'=>$email,'password'=>$password)));
+			if($userDetails)
+			{
+				$user = $userDetails[0]['Users'];
+				$this->Session->write('userId',$user['id']);
+				$this->Session->write('user_name',$user['user_name']);
+				echo $user['id'];
+			}
+			else
+			{
+				echo "FAIL";
+			}
+		}
+		exit;
+	}
+	
 	public function index() {
 		$this->User->recursive = 0;
 		$this->set('users', $this->Paginator->paginate());
@@ -95,15 +124,35 @@ class UsersController extends AppController {
  */
 	public function create()
 	{
-		$user = array();
-		$user = $this->Users->create();
-		$user['Users']['user_name'] = $_POST['user_name'];
-		$user['Users']['email'] = $_POST['email'];
-		$user['Users']['password'] = $_POST['password'];
-		$user['Users']['created_date'] = date('Y-m-d H:i:s');
-		$user['Users']['url'] = $_POST['url'];
-		$this->Users->save($user);
-		echo $this->Users->id;
+		if ($this->RequestHandler->isAjax())
+		{	
+			$user = array();
+			//$user = $this->Users->create();
+			$user['Users']['user_name'] = $this->request->data['user_name'];
+			$user['Users']['email'] = $this->request->data['email'];
+			$user['Users']['password'] = $this->Auth->password($_POST['password']);
+			$user['Users']['created_date'] = date('Y-m-d H:i:s');
+			$user['Users']['url'] = $this->request->data['url'];
+			$this->Users->save($user);//saving user in DB
+			echo $userId = $this->Users->id;
+			
+			//send activation mail to user
+			
+			$this->Session->write('userId',$userId);
+			$this->Session->write('user_name',$user['Users']['user_name']);
+			
+			$mv = $this->Microwebsites->create();
+			$mv['Microwebsites']['user_id'] = $userId;
+			$mv['Microwebsites']['theme_id'] = $this->request->data['themeId'];
+			$mv['Microwebsites']['url'] = $this->request->data['url'];
+			$mv['Microwebsites']['created_date'] = date('Y-m-d H:i:s');
+			$this->Microwebsites->save($mv);//saving Microwebsite data
+			
+		}
+		else
+		{
+		throw new ForbiddenException();
+		}
 		exit;
 	}
  
@@ -146,10 +195,36 @@ class UsersController extends AppController {
 		//$this->Session->delete('Users.themeId');//deleting session selected theme off me for production face
 	}
 	public function step3(){
-	
+		$userId = $this->Session->read('userId');
+		if($userId)
+		{
+			$websiteDetails = $this->Microwebsites->find('all',array('conditions'=>array('user_id'=>$userId)));
+			$this->set('websiteDetails',$websiteDetails[0]['Microwebsites']);
+		}
+		else
+		{
+			throw new ForbiddenException();
+		}
 	}
 	public function new_event(){
 		$this->layout = 'ajax';
 		$this->register = 'new_event';
+	}
+	public function checkurl(){
+		
+		if ($this->RequestHandler->isAjax())
+		{
+			$url = ($_GET['url']);
+			$data = $this->Microwebsites->find('all',array('conditions'=>array('url'=>$url)));
+			if($data)
+			echo "false";
+			else
+			echo "true";
+		}
+		else
+		{
+			throw new ForbiddenException();
+		}
+		exit;
 	}
 }
