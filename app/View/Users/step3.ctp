@@ -250,7 +250,7 @@
 		</div>
 		<div class="clearfix" style="overflow:hidden"> <hr/></div>
 		<div class="email-txt">
-			<input type="text" placeholder="Enter emails here(ajay@gmail.com, mukesh@gm..."><img src="<?php echo base_url;?>img/icon-maildict.jpg">
+			<input type="text" id="friends_email" placeholder="Enter emails here(ajay@gmail.com, mukesh@gm..."><img src="<?php echo base_url;?>img/icon-maildict.jpg">
 		</div>
 		<div class="choices">
 		<?php
@@ -495,7 +495,7 @@ var base_url = '<?php echo base_url;?>';
 	});
 	
 	$("#sendinvite").on('click',function(){
-		var email = $('#input').val();
+		var email = $('#friends_email').val();
 		var that = this;
 		$.get(base_url+'events/sendInvite','email='+email,function(res){
 			alert('sent sucessfully');

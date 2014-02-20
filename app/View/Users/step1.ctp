@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row">
       <article class="col-md-6 col-lg-6 col-sm-6"> <img src="../img/logo.png" class="img-responsive" alt="" id="logo"> </article>
-      <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> <a href="#">Login</a> <a href="#">Register</a> </aside>
+      <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> <a href="<?php echo base_url;?>users/login_new">Login</a> <a href="#">Register</a> </aside>
     </div>
     <!--end row--> 
     
