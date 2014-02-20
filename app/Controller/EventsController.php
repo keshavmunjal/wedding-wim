@@ -242,4 +242,26 @@ class EventsController extends AppController {
 	}
 	
 	
+	
+	function sendInvite()
+	{
+		if ($this->RequestHandler->isAjax())
+		{
+			$to = ($_GET['email']);
+			$Email = new CakeEmail();
+			$Email->template('card')
+			->emailFormat('html')
+			->to($to)
+			->subject('Invitation')
+			->from('ShaadiSeason@shaadiseason.com')
+			->send();
+		}
+		else
+		{
+			throw new ForbiddenException();
+		}
+		exit;
+	}
+	
+	
 }

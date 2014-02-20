@@ -996,3 +996,18 @@ display: inline-block;
 text-decoration: none;
 -webkit-font-smoothing: antialiased;
 }
+/* Invite box */
+.grey-box{background-color:#ccc; border-radius:5px; overflow:hidden; padding-bottom:27px; margin-bottom:24px;}
+.grey-box hr{margin:0; overflow:hidden;}
+.grey-box .cross{
+position: absolute;
+right: 5px;
+}
+.email-txt{overflow:hidden; background-color:#fff; border-radius:5px; padding:10px; float:left; margin-top:24px; margin-left:10px;}
+.email-txt input[type="text"]{border:none !important; width:349px !important; 	background-color:transparent}
+.choices{clear:both; overflow:hidden; padding-top:22px; padding-bottom:15px; padding-left:10px;}
+.cross{margin:14px 20px;}
+p.social{overflow:hidden; clear:both; color:#fff; font-size:12px; padding-left:40px; }
+.button{padding-left:10px;}
+
+/*invite box*/

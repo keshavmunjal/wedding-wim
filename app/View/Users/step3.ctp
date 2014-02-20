@@ -172,10 +172,11 @@
     Your Invite Card <span class="caret"></span>
   </button>
   <ul class="dropdown-menu clearfix" role="menu">
-    <li><a href="#">Engagement</a></li>
-    <li><a href="#">Cocktail </a></li>
-    <li><a href="#">Weddings</a></li>
-   
+  <?php 
+	foreach($events as $e){
+  ?>
+    <li><a href="#"><?php print($e['Events']['event_title']);?></a></li>
+   <?php }?>
   </ul>
   
   
@@ -213,7 +214,7 @@
 
 <div class="col-md-4" id="friend-request">
 
-<button type="button" class="btn  btn-info  my-button">Send to Friend</button>
+<button type="button" class="btn  btn-info  my-button" id="send_to_friend">Send to Friend</button>
 <!--<a href="https://www.google.com/accounts/OAuthAuthorizeToken?oauth_token=<?php echo $token;?>" type="button" class="btn  btn-info  my-button" id="send">Send to Friend</a>-->
 </div>
 
@@ -239,6 +240,33 @@
 
 
 <section class="row" style="margin:0;">
+
+<div class="col-md-12 grey-box" style="display:none">
+	<div class="clear">
+		<div class="clearfix" style="overflow:hidden;">
+			<a href="#" class="cross-icon"><img src="<?php echo base_url;?>img/cross.jpg" class="pull-right cross"></a>
+			<br>
+			<p class="social"> select friends from <img src="<?php echo base_url;?>img/grey-facebook.jpg" style="margin-left:10px; margin-right:9px;"><img src="<?php echo base_url;?>img/google.jpg" style="margin-right:9px"> select friends from GMail.</p>
+		</div>
+		<div class="clearfix" style="overflow:hidden"> <hr/></div>
+		<div class="email-txt">
+			<input type="text" placeholder="Enter emails here(ajay@gmail.com, mukesh@gm..."><img src="<?php echo base_url;?>img/icon-maildict.jpg">
+		</div>
+		<div class="choices">
+		<?php
+			foreach($events as $e)
+			{
+		?>
+			<input type="checkbox">&nbsp;<?php print($e['Events']['event_title'])?>&nbsp;&nbsp;&nbsp;
+		<?php }?>	
+		
+		</div>
+		<div class="button">
+			<input type="image" id="sendinvite" src="<?php echo base_url;?>img/send-btn.jpg">
+		</div>
+	</div>
+</div>
+
 
  <div class="col-md-12 content">
               <h3>YOU ARE CORDIALLY INVITED </h3>
@@ -405,12 +433,8 @@
   </article>
 </footer>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-<script src="https://code.jquery.com/jquery.js"></script> 
-<!-- Latest compiled and minified JavaScript --> 
-<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script> 
+
 <!-- Custom JavaScript --> 
-<script src="js/custom.js"></script>
 <script src="http://connect.facebook.net/en_US/all.js"></script>
 <script>
 FB.init({
@@ -435,7 +459,7 @@ var base_url = '<?php echo base_url;?>';
 
 	<?php if(isset($contact)){?>
 	$('#my_modal').modal('show');
-	<?}?>
+	<?php }?>
 	
 	$('#send').click(function(){
 		$('#contact_list').find('tbody tr > td:last-child input:checkbox')
@@ -463,6 +487,19 @@ var base_url = '<?php echo base_url;?>';
 			$(this).closest('tr').toggleClass('selected');
 		});
 			
+	});
+	
+	$("#send_to_friend").on('click',function(){
+		$(".grey-box").slideToggle('slow');
+		
+	});
+	
+	$("#sendinvite").on('click',function(){
+		var email = $('#input').val();
+		var that = this;
+		$.get(base_url+'events/sendInvite','email='+email,function(res){
+			alert('sent sucessfully');
+		});
 	});
 
 });

@@ -260,7 +260,7 @@ class UsersController extends AppController {
 			$iMaxResults = 100; // max results
 			$sStep = 'auth'; // current step
 			
-			
+			$argarray = array();
 			$oAuth = new GmailOath($sClientId, $sClientSecret, $argarray, false, $sCallback);
 			$oGetContacts = new GmailGetContacts();
 			
@@ -304,14 +304,22 @@ class UsersController extends AppController {
 				$_SESSION['oauth_token_secret'] = $oRequestToken['oauth_token_secret'];
 			}
 			/*****End of Gmail*****/
+			
+			
 			$websiteDetails = $this->Microwebsites->find('all',array('conditions'=>array('user_id'=>$userId)));
+			$events = $this->Events->find('all',array('conditions'=>array('user_id'=>$userId)));
+			
 			
 			$this->set('websiteDetails',$websiteDetails[0]['Microwebsites']);
+			$this->set('events',$events);
+			
 		}
 		else
 		{
 			throw new ForbiddenException();
 		}
+		
+			//echo "sdfdsf";exit;
 	}
 	public function new_event(){
 		$this->layout = 'ajax';

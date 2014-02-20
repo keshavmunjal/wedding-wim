@@ -360,6 +360,7 @@ var base_url  = '<?php echo base_url;?>';
 						if($userId){
 					?>
 						<a href="<?php echo  base_url;?>users/edit_event">Edit</a>
+						<a href="<?php echo  base_url;?>users/step3">Invites</a>
 						<a href="<?php echo  base_url;?>users/login_new">Logout</a>
 					<?php }?>
 					  <!--<a href="#my_modal" data-toggle="modal" data-target="#my_modal">Register</a>-->
