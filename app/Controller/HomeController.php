@@ -36,7 +36,7 @@ class HomeController extends AppController {
  *
  * @var array
  */
-	public $uses = array();
+	public $uses = array('Themes','Users','Microwebsites','Events','Wedding_details');
 
 /**
  * Displays a view
@@ -47,12 +47,50 @@ class HomeController extends AppController {
  *	or MissingViewException in debug mode.
  */
  
-	public function index()
+	public function index($url='')
 	{
 		//echo Router::url('/');       //-> /my_app
 		//echo Router::url('/', true); //-> http://site.domain.com/my_app
+		/*if($url!='')
+		{
+			echo "sdfdsff";exit;
+			$this->autoRender = false;
+			$this->render('test');
+		}
+		else
+		{
+			echo "selse";exit;
+			$this->render('home/index');
+		} */
 		
-		
+	}
+	public function sites($url='')
+	{
+		if($url!="")
+		{
+			$data = $this->Microwebsites->find('all',array('conditions'=>array('url'=>$url)));
+			$mv = $data[0]['Microwebsites'];
+			if($data)
+			{
+				$weddingdata = $this->Wedding_details->find('all',array('conditions'=>array('user_id'=>$mv['user_id'])));
+				$data = $this->Users->find('all',array('conditions'=>array('id'=>$mv['user_id'])));
+				$user = $data[0]['Users'];
+				$events = $this->Events->find('all',array('conditions'=>array('user_id'=>$mv['user_id'])));
+				//pr($events);
+				//pr($user);
+				//pr($mv);
+				$this->set('wedding',$weddingdata[0]['Wedding_details']);
+				$this->set('events',$events);
+			}
+			else
+			{
+				echo "not found url";exit;
+			}
+		}
+		else
+		{
+			echo "notfound";exit;
+		}
 	}
 	public function sendInvite() {
 	

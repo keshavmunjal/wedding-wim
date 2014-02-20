@@ -1,5 +1,4 @@
 <body id="step3">
-
 <!-- top navigation and logo -->
 <header role = "banner">
   <div class="container">
@@ -60,8 +59,8 @@
 <div class="col-md-8 col-sm-8 text-right ">
 
 <form class="form-inline" role="form">
- <em>www.shaadiseason.com/</em>
- <input type="text" class="form-control" id="user-link" placeholder="<?php echo $websiteDetails['url']?>" disabled>
+ <em>www.shaadiseason.in/sites/<?php echo $websiteDetails['url']?></em>
+ <!--<input type="text" class="form-control" id="user-link" placeholder="<?php echo $websiteDetails['url']?>" disabled>-->
   
 </form>
 
@@ -168,7 +167,9 @@
 <!--frend reauest-->
 
 <div class="col-md-4" id="friend-request">
-<button type="button" class="btn  btn-info  my-button">Send to Friend</button>
+
+<!--<button type="button" class="btn  btn-info  my-button" id="send">Send to Friend</button>-->
+<a href="https://www.google.com/accounts/OAuthAuthorizeToken?oauth_token=<?php echo $token;?>" type="button" class="btn  btn-info  my-button" id="send">Send to Friend</a>
 </div>
 
 
@@ -364,5 +365,14 @@
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script> 
 <!-- Custom JavaScript --> 
 <script src="js/custom.js"></script>
+<script>
+$(document).ready(function(){
+	/* $('#send').click(function(){
+		//alert("sdfd");
+		$('#my_modal').modal('show');
+	}); */
+
+});
+</script>
 </body>
 </html>

@@ -473,11 +473,17 @@ body#step2 [role="banner"] {
 	margin-top:15%;
 	z-index:1;
 }
+.enter-details1{
+	padding:200px 0px;
+}
+.enter-details{
+	padding: 0px 0px 200px 0px;
+}
 #enter-details {
 	float:none;
 	verticle-align:middle;
-	padding:200px 0;
 	clear:both;
+	transition:1s all;
 }
 #content {
 	background:rgba(255, 255, 255, 0.8);
@@ -631,7 +637,7 @@ address {
 }
 .up-textContainer em {
 	color: #3366FF;
-	left: 25%;
+	left: 2%;
 	position: absolute;
 	top: 40%;
 }
@@ -806,7 +812,7 @@ right:0;  z-index:999;}
 .event_text{background: none;border: none;width: 225px;}
 .datepicker{width:410px;text-align:center;color: #969696;background: none;border: none;}
 #preloader{position: absolute;right: 38px;top: 9px;display:none;}
-.pr-button:active,.pr-button:hover,.pr-button:focus{background: none!important;color: white!important;}
+/*.pr-button:active,.pr-button:hover,.pr-button:focus{background: none!important;color: white!important;}*/
 .ui-datepicker-calendar{
 background: #27a1de;
 }
@@ -828,7 +834,8 @@ color: #fff !important;
 .ui-datepicker{
 left: 532.5px !important;
 width: 269px !important;
-}*/
+z-index:99999!important;
+}
 .ui-datepicker th{
 color: #73e9ff;
 font-size: 10px;
@@ -904,10 +911,11 @@ html, body, #map-canvas {
         font-size: 13px;
         font-weight: 300;
       }
-			.address_input{width:272px;height:110px;border:none;margin-top:10px;}
-			.address_input:focus{outline:0;}
-			.map_canvas{width: 272px; height:208px!important;border:1px solid #ccccc4;border-radius:8px;margin:10px!important;}
-			.save_address{float: right;margin-right: 10px;width: 100px;height: 30px;padding:0px;background: #00adef;}
+		.address_input{width:272px;height:110px;border:none;margin-top:10px;}
+		.address_input:focus{outline:0;}
+		.map_canvas{width: 272px; height:208px!important;border:1px solid #ccccc4;border-radius:8px;margin:10px!important;}
+		.save_address{float: right;margin-right: 10px;width: 100px;height: 30px;padding:0px;background: #00adef;}
+		div.fileinputs{position:relative}div.fakefile{top:0;left:0;z-index:1}input.file{position:relative;text-align:right;float:left;-moz-opacity:0;filter:alpha(opacity:0);opacity:0;z-index:2}.display{width:175px;border:0;position:absolute;left:33%%;}.image-div{height:30px;position:absolute;}..enlarge{width:260px;margin-right:25px;}	
 			
 /* custom media query for specific devices*/
 @media (max-width: 980px) {
@@ -978,10 +986,10 @@ left:0 right:0;
 .edit-keyword::after{
 content: "Enter Name";
 color: #275cf3;
-width: 75px;
+width: 113px;
 position: absolute;
-top: -16px;
-left: 20px;
+top: -14px;
+left: 0px;
 font: normal normal 14px "";
 line-height: 1;
 display: inline-block;

@@ -1,6 +1,7 @@
 <?php
 App::uses('AppController', 'Controller');
 App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
+App::uses('CakeEmail', 'Network/Email');
 /**
  * Users Controller
  *
@@ -15,7 +16,7 @@ class UsersController extends AppController {
  * @var array
  */
 	public $components = array('Paginator');
-	public $uses = array('Themes','Users','Microwebsites');
+	public $uses = array('Themes','Users','Microwebsites','Wedding_details','Events');
 
 /**
  * index method
@@ -34,7 +35,7 @@ class UsersController extends AppController {
 		{
 			$email = $this->request->data['username'];
 			$password = $this->Auth->password($this->request->data['password']);
-			$userDetails = $this->Users->find('all',array('conditions'=>array('email'=>$email,'password'=>$password)));
+			$userDetails = $this->Users->find('all',array('conditions'=>array('email'=>$email,'password'=>$password,'status'=>"'1'")));
 			if($userDetails)
 			{
 				$user = $userDetails[0]['Users'];
@@ -126,27 +127,51 @@ class UsersController extends AppController {
 	{
 		if ($this->RequestHandler->isAjax())
 		{	
-			$user = array();
-			//$user = $this->Users->create();
-			$user['Users']['user_name'] = $this->request->data['user_name'];
-			$user['Users']['email'] = $this->request->data['email'];
-			$user['Users']['password'] = $this->Auth->password($_POST['password']);
-			$user['Users']['created_date'] = date('Y-m-d H:i:s');
-			$user['Users']['url'] = $this->request->data['url'];
-			$this->Users->save($user);//saving user in DB
-			echo $userId = $this->Users->id;
-			
-			//send activation mail to user
-			
-			$this->Session->write('userId',$userId);
-			$this->Session->write('user_name',$user['Users']['user_name']);
-			
-			$mv = $this->Microwebsites->create();
-			$mv['Microwebsites']['user_id'] = $userId;
-			$mv['Microwebsites']['theme_id'] = $this->request->data['themeId'];
-			$mv['Microwebsites']['url'] = $this->request->data['url'];
-			$mv['Microwebsites']['created_date'] = date('Y-m-d H:i:s');
-			$this->Microwebsites->save($mv);//saving Microwebsite data
+			$tempuser = $this->Users->find('all',array('conditions'=>array('email'=>$_POST['email'])));
+			$tempmv = $this->Microwebsites->find('all',array('conditions'=>array('url'=>$this->request->data['url'])));
+			if($tempuser)
+			{
+				echo "User_Exist";
+				exit;
+			}
+			else if($tempmv)
+			{
+				echo "Url_Exist";
+				exit;
+			}
+			else
+			{
+				$user = array();
+				//$user = $this->Users->create();
+				$user['Users']['user_name'] = $this->request->data['user_name'];
+				$user['Users']['email'] = $this->request->data['email'];
+				$user['Users']['password'] = $this->Auth->password($_POST['password']);
+				$user['Users']['created_date'] = date('Y-m-d H:i:s');
+				$user['Users']['url'] = $this->request->data['url'];
+				$user['Users']['new_email_key'] = md5(rand().microtime());
+				$this->Users->save($user);//saving user in DB
+				echo $userId = $this->Users->id;
+				//send activation mail to user
+				/*
+				 $Email = new CakeEmail();
+				$Email->template('activate')
+					->viewVars(array('user' => $user['Users'],'user_id'=>$userId))
+					->emailFormat('html')
+					->to($user['Users']['email'])
+					->subject('Welcome')
+					->from('ShaadiSeason@shaadiseason.com')
+					->send(); 
+				*/
+				//$this->Session->write('userId',$userId);
+				//$this->Session->write('user_name',$user['Users']['user_name']);
+				
+				$mv = $this->Microwebsites->create();
+				$mv['Microwebsites']['user_id'] = $userId;
+				$mv['Microwebsites']['theme_id'] = $this->request->data['themeId'];
+				$mv['Microwebsites']['url'] = $this->request->data['url'];
+				$mv['Microwebsites']['created_date'] = date('Y-m-d H:i:s');
+				$this->Microwebsites->save($mv);//saving Microwebsite data
+			}
 			
 		}
 		else
@@ -169,6 +194,35 @@ class UsersController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+	
+	public function activate($userId,$new_email_key)
+	{
+		//echo $userId.$new_email_key;
+		$this->loadModel('User');
+		$user = $this->Users->find('all',array(
+									'conditions'=>array(
+										'id'=>$userId,
+										'new_email_key'=>$new_email_key,
+										'UNIX_TIMESTAMP(created_date) >'=>time() - 60*60*24*2
+									)));
+		if($user)
+		{
+			//activate user account
+			$this->Users->updateAll(array('status'=>"'1'"), array('id = '=>$user[0]['Users']));
+			$userdetail = $user[0]['Users'];
+			$this->Session->write('userId',$userdetail['id']);
+			$this->Session->write('user_name',$userdetail['user_name']);
+			$this->redirect(array("controller"=>"users","action"=>"step3"));
+		}
+		else
+		{
+			//error activation
+		}
+		exit;
+	}
+	
+	
+	
 
 	public function registers(){
 	
@@ -198,7 +252,54 @@ class UsersController extends AppController {
 		$userId = $this->Session->read('userId');
 		if($userId)
 		{
+			/*****Gmail Code******/
+			App::import('Vendor', 'GmailOath');
+			$sClientId = '365616338942-a341et2n3h0i1q6eb3d0fofgladpluhl.apps.googleusercontent.com';
+			$sClientSecret = 'XnN7ZEM9jEmxjikcxbW2CfoI';
+			$sCallback = 'http://localhost.com/gm/index.php'; // callback url, don't forget to change it to your!
+			$iMaxResults = 100; // max results
+			$sStep = 'auth'; // current step
+			
+			
+			$oAuth = new GmailOath($sClientId, $sClientSecret, $argarray, false, $sCallback);
+			$oGetContacts = new GmailGetContacts();
+			
+			if ($_GET && $_GET['oauth_token']) {
+
+				$sStep = 'fetch_contacts'; // fetch contacts step
+
+				// decode request token and secret
+				$sDecodedToken = $oAuth->rfc3986_decode($_GET['oauth_token']);
+				$sDecodedTokenSecret = $oAuth->rfc3986_decode($_SESSION['oauth_token_secret']);
+
+				// get 'oauth_verifier'
+				$oAuthVerifier = $oAuth->rfc3986_decode($_GET['oauth_verifier']);
+
+				// prepare access token, decode it, and obtain contact list
+				$oAccessToken = $oGetContacts->get_access_token($oAuth, $sDecodedToken, $sDecodedTokenSecret, $oAuthVerifier, false, true, true);
+				$sAccessToken = $oAuth->rfc3986_decode($oAccessToken['oauth_token']);
+				$sAccessTokenSecret = $oAuth->rfc3986_decode($oAccessToken['oauth_token_secret']);
+				$aContacts = $oGetContacts->GetContacts($oAuth, $sAccessToken, $sAccessTokenSecret, false, true, $iMaxResults);
+
+				// turn array with contacts into html string
+				$sContacts = $sContactName = '';
+				foreach($aContacts as $k => $aInfo) {
+					$sContactName = end($aInfo['title']);
+					$aLast = end($aContacts[$k]);
+					foreach($aLast as $aEmail) {
+						echo $sContacts .= '<p>' . $sContactName . '(' . $aEmail['address'] . ')</p>';
+					}
+				}
+			} else {
+				// prepare access token and set it into session
+				$oRequestToken = $oGetContacts->get_request_token($oAuth, false, true, true);
+				$this->set('token',$oAuth->rfc3986_decode($oRequestToken['oauth_token']));
+				$_SESSION['oauth_token'] = $oRequestToken['oauth_token'];
+				$_SESSION['oauth_token_secret'] = $oRequestToken['oauth_token_secret'];
+			}
+			/*****End of Gmail*****/
 			$websiteDetails = $this->Microwebsites->find('all',array('conditions'=>array('user_id'=>$userId)));
+			
 			$this->set('websiteDetails',$websiteDetails[0]['Microwebsites']);
 		}
 		else
@@ -227,4 +328,48 @@ class UsersController extends AppController {
 		}
 		exit;
 	}
+	
+	public function login_new(){
+		if($_POST){
+		//pr($_POST);
+			$email = $this->request->data['loginEmail'];
+			$password = $this->Auth->password($this->request->data['loginPassword']);
+			$userDetails = $this->Users->find('all',array('conditions'=>array('email'=>$email,'password'=>$password)));
+			if($userDetails)
+			{
+				$user = $userDetails[0]['Users'];
+				$this->Session->write('userId',$user['id']);
+				$this->Session->write('user_name',$user['user_name']);
+				$data = $this->Microwebsites->find('all',array('conditions'=>array('user_id'=>$user['id'])));
+				$url = $data[0]['Microwebsites']['url'];
+				$this->redirect(array(
+					'controller' => 'home',
+					'action' => 'sites/'.$url,
+					
+				));
+			}
+			else
+			{
+				echo "FAIL";
+			}
+		}
+	}
+	
+	public function edit_user(){
+		$userId = $this->Session->read('userId');
+		if($userId){
+			$wedding_details = $this->Wedding_details->find('all', array('conditions' => array('user_id' => $userId)));
+			$events = $this->Events->find('all', array('conditions' => array('user_id' => $userId)));
+			$theme_id = $this->Session->read('Users.themeId');
+			$theme= $this->Themes->find('all', array('conditions' => array('id' => $theme_id)));
+			//pr($events);exit;
+			$this->set('wedding', $wedding_details[0]['Wedding_details']);
+			$this->set('events', $events);
+			$this->set('themeId', $theme_id);
+			$this->set('theme', $theme[0]['Themes']);
+		}
+	}
+	
+	
+	
 }

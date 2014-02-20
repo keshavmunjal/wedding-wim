@@ -42,6 +42,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>	
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
 	<?php
 		echo $this->Html->meta('icon');
 		echo $this->fetch('meta');

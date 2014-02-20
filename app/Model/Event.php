@@ -1,5 +1,6 @@
 <?php
 App::uses('AppModel', 'Model');
+App::uses('DboSource', 'Model/Datasource');
 /**
  * Event Model
  *
@@ -14,7 +15,7 @@ class Event extends AppModel {
  *
  * @var mixed False or table name
  */
-	public $useTable = 'Events';
+	//public $usesTable = 'Events';
 
 /**
  * Validation rules
@@ -139,4 +140,45 @@ class Event extends AppModel {
 		)
 	);
 
+	public function update_eve($data){
+	//pr($data);
+		$db = $this->getDataSource();
+		for($i=0; $i<$data['no_of_events']; $i++){
+				
+				$temp = array();
+				//$event = $this->Events->create();
+				//$event['Events']['user_id'] = $data['user_id'];
+				$temp['event_title'] = $db->value($data['event_name'][$i], 'string');
+				$temp['event_date'] = $data['date'][$i];
+				$temp['event_date_text'] = $db->value($data['datepicker'][$i], 'string');
+				/*if($upload){
+					$temp['event_image'] = $image['name'];
+				}*/
+				$temp['venue'] = $db->value($data['address'][$i], 'string');
+				$temp['rsvp'] = $db->value($data['rsvp'][$i], 'string');
+				$temp['last_modified'] = $db->value(date('Y-m-d H:i:s'), 'string');
+				$data['event_id'][$i];
+				$sql = "UPDATE `shaadise_staging`.`events` AS `Event` SET `Event`.`event_title` = ".$temp['event_title'].", `Event`.`event_date` = ".$temp['event_date'].", `Event`.`event_date_text` = ".$temp['event_date_text'].", `Event`.`venue` = ".$temp['venue'].", `Event`.`rsvp` = ".$temp['rsvp'].", `Event`.`last_modified` = ".$temp['last_modified']." WHERE `id` = ".$data['event_id'][$i]."";
+				
+				$update = $this->Event->query($sql);
+				return $update;
+				/*$update = $this->updateAll(
+					$temp,
+					array('id' => 7)
+				);*/
+				//var_dump($update);exit;
+			}
+			
+			/*$temp = array();
+			$groom = $db->value($data['groom'], 'string');
+			$temp['groom'] = $groom;
+			$bride = $db->value($data['bride'], 'string');
+			$temp['bride'] = $bride;
+			$temp['wedding_date'] = $data['wedding_date'];
+			$date = $db->value($data['wedding_date_text'], 'string');
+			$temp['wedding_date_text'] = $date;
+			
+			*/
+		
+	}
 }

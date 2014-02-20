@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script type="text/javascript">
 var base_url  = '<?php echo base_url;?>';
-		
+var editable = true;
 	$(document).ready(function(){
 	
 	/***validation**/
@@ -132,6 +132,9 @@ var base_url  = '<?php echo base_url;?>';
 			if(!(res == 'FAIL'))
 			{
 				//alert(res);
+				$('#alert').html('Incorrect details or account not activated.');
+				$('#alert').show();
+				setTimeout(function(){$('#alert').alert('close')},3000);
 				userId = res;
 				$("#my_modal").modal('hide');
 				saveEvent(userId);
@@ -144,18 +147,46 @@ var base_url  = '<?php echo base_url;?>';
 		
 		var data = 'user_name='+$("#name").val()+'&email='+$("#email").val()+'&password='+$("#password").val()+'&url='+$("#url").val()+'&themeId='+$("#themeId").val();
 		$.post(base_url+'users/create',data,function(msg){
+		//alert(msg);
+		if(msg=='User_Exist')
+		{
+			$('#alert').html('Email allready registerd');
+			$('#alert').fadeIn();
+			setTimeout(function(){$('#alert').fadeOut()},3000);
+		}
+		else if(msg=='Url_Exist')
+		{
+			$('#alert').html('URL allready used please choose another one');
+			$('#alert').fadeIn();
+			setTimeout(function(){$('#alert').fadeOut()},3000);
+		}
+		else
+		{
+			$('#alert').removeClass('alert-danger');
+			$('#alert').addClass('alert-success');
+			$('#alert').html('Registerd successfully we have sent you mail, please activate your account');
+			$('#alert').fadeIn();
+			setTimeout(function(){$('#alert').fadeOut();$("#my_modal").modal('hide');},3000);
 			var userId = msg;
-			$("#my_modal").modal('hide');
-			saveEvent(userId);
+			$('#user_id').val(userId);
+			$("#wedding").ajaxForm();     
+			$("#wedding").submit();
+			
+			
+			
+			//saveEvent(userId);
+		}
 			
 		});
 	}
 	
-	function saveEvent(userId)
+	/*function saveEvent(userId)
 	{
 			var validate = true;
 			var groom = $('#input_groom').val();			
 			var bride = $('#input_bride').val();
+			var weddingdate = $('#weddingdate').val();
+			var wedding_date_text = $('#wedding_date_text').val();
 			localStorage.setItem("url", $('#url').val());
 			$('input.wedding').each(function() {
 				if(this.value==''){
@@ -165,49 +196,79 @@ var base_url  = '<?php echo base_url;?>';
 				}			
 			});			
 			if(validate){
-				var data = 'userId='+userId+'&user_name='+groom+'&bride_name='+bride+'&'+$('#wedding').serialize();
-				var base_url = 'http://localhost/wedding-wim/';
+				var data = 'userId='+userId+'&groom='+groom+'&bride='+bride+'&wedding_date='+weddingdate+'&wedding_date_text='+wedding_date_text+'&'+$('#wedding').serialize();
 				console.log(data);
 				$.ajax({
 					url:base_url+"events/add_event",
 					data:data,
 					type:"POST",
 					beforeSend:function(){
-						$('#publish').html('Publishing..');
-						$('#preloader').css('display','block');								
+						//$('#publish').html('Publishing..');
+						//$('#preloader').css('display','block');								
 					},
 					success: function(msg){
 						//$('body').html(msg); return;						
-						$('#preloader').css('display','none');	
-						$('#publish').html('Published');
-						window.location.href = "step3";
+						//$('#preloader').css('display','none');	
+						//$('#publish').html('Published');
+						//window.location.href = "step3";
 						
 					}
 			});
 			};
 	}
-	
+*/	
 	
 	
 		var geocoder;
 		var map;
 		var last_id = 3;
-		$(".datepicker" ).datepicker({dateFormat: 'DD dd MM yy'});
-		$( "#wedding_date" ).datepicker({dateFormat: 'DD dd MM yy'});
+		$(".datepicker" ).datepicker({dateFormat: 'DD dd MM yy',
+				onSelect: function (dateText) {
+				/* get the selected date */
+				var selectedDate = $(this).datepicker('getDate');
+				/* get the array of day names and month names from the date picker */
+				var dayNames = $(this).datepicker('option', 'dayNames');
+				/* default dayNames can be accessed using $.datepicker._defaults.dayNames; */
+				var monthNames = $(this).datepicker('option', 'monthNames');
+				/* default monthNames can be accessed using $.datepicker._defaults.monthNames; */
+				/* assign are vars */
+				var date = selectedDate.getDate();
+				var month = selectedDate.getMonth(); // taking the month name from the array of month names
+				var year = selectedDate.getFullYear();
+				/* update the ui */
+				//alert(year+'-'+month+'-'+ date);
+				$(this).next('input').val(year+'-'+month+'-'+ date);
+				}
+		});
+		$( "#wedding_date" ).datepicker({dateFormat: 'DD dd MM yy',
+				onSelect: function (dateText) {
+				/* get the selected date */
+				var selectedDate = $(this).datepicker('getDate');
+				/* get the array of day names and month names from the date picker */
+				var dayNames = $(this).datepicker('option', 'dayNames');
+				/* default dayNames can be accessed using $.datepicker._defaults.dayNames; */
+				var monthNames = $(this).datepicker('option', 'monthNames');
+				/* default monthNames can be accessed using $.datepicker._defaults.monthNames; */
+				/* assign are vars */
+				var date = selectedDate.getDate();
+				var month = selectedDate.getMonth(); // taking the month name from the array of month names
+				var year = selectedDate.getFullYear();
+				/* update the ui */
+				//alert(year+'-'+month+'-'+ date);
+				$(this).next('input').val(year+'-'+month+'-'+ date);
+				}});
 		$('.editable').addClass('hide');
 		$('.edit_text').click(function(){
-			
-			//var wid = $(this).width();
-			//$('#input'+id).width(wid);
-			
-			$('#'+this.id).addClass('hide');
-			var id = this.id.replace('span', '');			
-			$('#input'+id).val($(this).html());
-			$('#input'+id).removeClass('hide').focus();			
+			if(editable)
+			{
+				$('#'+this.id).addClass('hide');
+				var id = this.id.replace('span', '');			
+				$('#input'+id).val($(this).html());
+				$('#input'+id).removeClass('hide').focus();	
+			}
 		});
 		$('.title_weds').focus(function(){
-			console.log(this.id);
-			
+			//console.log(this.id);
 			$('.edit-text-same').removeClass('edit-keyword');
 			$("#"+this.id).next('span').addClass('edit-keyword');
 		});
@@ -221,15 +282,20 @@ var base_url  = '<?php echo base_url;?>';
 			//$('#span'+id).addClass('show');		
 		});
 		$('.event').click(function(){
+			if(editable)
+			{			
 				var id = this.id;
 				$('.edit_event').addClass('hide');
 				$('.edit_'+id).removeClass('hide');				
 				$('.event').removeClass('border-blue');
 				$('.event').addClass('border-gray');
 				$('#'+id).removeClass('border-gray');	
-				$('#'+id).addClass('border-blue');	
+				$('#'+id).addClass('border-blue');
+				id = id.replace('event_','');
+				initFileUploads(id);
+			}
 				
-			});
+		});
 		$('.addEventButton').click(function(){
 			$.ajax({
 					url:"new_event",
@@ -251,7 +317,9 @@ var base_url  = '<?php echo base_url;?>';
 		});
 
 		$(".map-image").click(function(){
-			var id = this.id;
+			if(editable)
+			{			
+				var id = this.id;
 				$('#zoom_map_'+id).css('display','block')
 				initialize_map('map_canvas_'+id);
 				$('html').click(function (e){
@@ -262,9 +330,10 @@ var base_url  = '<?php echo base_url;?>';
 				}
 				});
 				
-						event.stopPropagation();
+				event.stopPropagation();
+			}
 				
-			});
+		});
 		$('.deleteEventButton').click(function(){
 			$(this).closest('.event').fadeOut();
 			var num = $('#no_of_events').val();
@@ -281,16 +350,33 @@ var base_url  = '<?php echo base_url;?>';
 				$(".zoom_map").hide();
 				//event.stopPropagation();
 		});
-
+		
+		$('#preview').on('click',function(){
+			$('#header-wrapper').fadeOut();
+			editable = false;
+			$(".datepicker" ).datepicker('disable');
+			$( "#wedding_date" ).datepicker('disable');
+			$('#enter-details').removeClass('enter-details1').addClass('enter-details');
+			$('.event').removeClass('border-blue');
+			$('.event').addClass('border-gray');
+		});
+		$('#edit-mode-link').click(function(){
+			$('#header-wrapper').fadeIn();
+			editable = true;
+			$(".datepicker" ).datepicker('enable');
+			$( "#wedding_date" ).datepicker('enable');
+			$('#enter-details').removeClass('enter-details').addClass('enter-details1');
+		});
+		
+		/********Publish button work*******/
 		$('#publish').on('click', function() {
 		
-			//alert("signup first or login");
-			$("#my_modal").modal('show');
-			return;
-			var validate = true;
+			/*var validate = true;
 			var groom = $('#input_groom').val();			
 			var bride = $('#input_bride').val();
-			localStorage.setItem("url", groom+"weds"+bride);
+			var weddingdate = $('#weddingdate').val();
+			var wedding_date_text = $('#wedding_date_text').val();
+			localStorage.setItem("url", $('#url').val());
 			$('input.wedding').each(function() {
 				if(this.value==''){
 					validate = false;
@@ -299,28 +385,85 @@ var base_url  = '<?php echo base_url;?>';
 				}			
 			});			
 			if(validate){
-				var data = 'user_name='+groom+'&bride_name='+bride+'&'+$('#wedding').serialize();
-				var base_url = 'http://localhost/wedding-wim/';
-				console.log(data);
-				$.ajax({
-					url:base_url+"events/add_event",
-					data:data,
-					type:"POST",
-					beforeSend:function(){
-						$('#publish').html('Publishing..');
-						$('#preloader').css('display','block');								
-					},
-					success: function(msg){
-						//$('body').html(msg); return;						
-						$('#preloader').css('display','none');	
-						$('#publish').html('Published');
-						window.location.href = "step3";
-						
-					}
-			});
-			};
-     });    
-	});
+				//alert("signup first or login");
+			$("#my_modal").modal('show');
+			}*/
+			
+			$("#my_modal").modal('show');
+			
+     }); 
+		/*var options = { 
+			success: function() 
+			{
+				alert('success');
+			},
+			error: function()
+			{
+				alert('unable to upload files');
+			}				 
+		}; */
+		//$("#wedding").ajaxForm();     
+	
+});
+	var W3CDOM = (document.createElement && document.getElementsByTagName);
+function initFileUploads(id){
+	var rel = $('#div'+id).attr('rel');
+	if(rel==1){
+		$('#div'+id).attr('rel', ++rel);
+		if (!W3CDOM) return;
+		var image = document.createElement('input');
+		image.type = 'file';
+		image.id = 'file_'+id;
+		image.name = 'image[]';
+		document.getElementById('fileinputs'+id).appendChild(image);
+		$('#file_'+id).addClass('file');
+		var fakeFileUpload = document.createElement('div');
+		fakeFileUpload.className = 'fakefile';
+		var href = document.createElement('em');
+		href.href='#';
+		href.id = 'attach_image';
+		href.class = 'edit_event';
+		href.class = 'edit_event_1';
+		href.innerHTML = "Upload photo";
+		
+		
+		fakeFileUpload.appendChild(href);
+		var file = document.createElement('input');
+		file.className = 'display';
+		file.id = 'fake_image';
+		fakeFileUpload.appendChild(file);
+		var x = document.getElementsByTagName('input');
+		for (var i=0;i<x.length;i++) {
+			if (x[i].type != 'file') continue;
+			if (x[i].parentNode.className != 'fileinputs') continue;
+			x[i].className = 'file';
+			var clone = fakeFileUpload.cloneNode(true);
+			x[i].parentNode.appendChild(clone);
+			x[i].relatedElement = clone.getElementsByTagName('input')[0];
+			x[i].onchange = function () {	
+				var ext = this.value.substring(this.value.lastIndexOf(".") + 1);
+				if((ext=='jpg')||(ext=='jpeg')||(ext=='png')||(ext=='bmp')||(ext=='gif')){
+					this.relatedElement.value = (this.value).replace("C:\\fakepath\\", '');
+					//$('#attach_image').remove();			
+					//$('#fake_image'+a).addClass('enlarge');
+				}else{
+						alert('Attach only image files');
+				}			
+			}
+		}		
+	}
+	$('.file').one('change', function(ev) {
+    var f = ev.target.files[0];
+    var fr = new FileReader();
+    
+    fr.onload = function(ev2) {
+        console.dir(ev2);
+        $('#event_image_'+id).attr('src', ev2.target.result);
+    };
+    
+    fr.readAsDataURL(f);
+		});
+}
 	function initialize_map(id) {
     geocoder = new google.maps.Geocoder();
     var latlng = new google.maps.LatLng(28.667696,77.093969);
@@ -380,7 +523,7 @@ var base_url  = '<?php echo base_url;?>';
 					  <button type="submit" class="btn btn-default">Register</button>
 					</form>
 				</section>
-				<section class="col-md-6">
+				<!--<section class="col-md-6">
 					<form role="form" method="post" id="loginForm">
 					  <div class="form-group">
 						<label for="exampleInputEmail1">Email address</label>
@@ -397,7 +540,11 @@ var base_url  = '<?php echo base_url;?>';
 					  </div>
 					  <button type="submit" class="btn btn-default">Let me in</button>
 					</form>
-				</section>
+				</section>-->
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<div class="alert alert-danger fade in" id="alert" style="display:none">
 			</div>
 		  </div>
 		</div><!-- /.modal-content -->
@@ -408,7 +555,12 @@ var base_url  = '<?php echo base_url;?>';
   <div class="container">
     <div class="row">
       <article class="col-md-6 col-lg-6 col-sm-6"> <img src="<?php echo base_url;?>img/logo.png" class="img-responsive" alt="" id="logo"> </article>
-      <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> <a href="#my_modal" data-toggle="modal" data-target="#my_modal">Login</a> <a href="#my_modal" data-toggle="modal" data-target="#my_modal">Register</a> </aside>
+      <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> 
+		<a href="<?php echo base_url;?>users/login_new">Login</a> 
+		<a href="#my_modal" data-toggle="modal" data-target="#my_modal">Register</a> 
+		<a href="javascript:void(0)" id="edit-mode-link">Edit Mode</a> 
+		<a href="javascript:void(0)" id="publish">Publish</a> 
+	  </aside>
     </div>
     <!--end row--> 
     
@@ -433,7 +585,7 @@ var base_url  = '<?php echo base_url;?>';
                   <button type="button" class="btn btn-info full-width initial-button-blue">Edit Mode</button>
                 </div>
                 <div class="col-md-6 col-xs-6 col-sm-6 ">
-                  <button type="button" class="btn btn-default full-width no-bg  pr-button" id="publish">Publish</button>
+                  <button type="button" class="btn btn-default full-width no-bg  pr-button" id="preview">Preview Mode</button>
                 </div>
 								<img src="<?php echo base_url;?>img/ajax-loader.gif" id="preloader"/>                
 							</div>
@@ -447,16 +599,18 @@ var base_url  = '<?php echo base_url;?>';
         <div class="col-md-8  center-align" id="theme-status">
           <p class="">Your Current Theme</p>
           <h3 class=""> <?php echo $themeDetails['theme_name']?> </h3>
-          <p class=" "> <a href="#">Change Theme</a> </p>
+          <p class=" "> <a href="<?php echo base_url;?>users/step1">Change Theme</a> </p>
 		  <input type="hidden" id="themeId" name="themeId" value="<?php echo $themeId;?>">
         </div>
       </aside>
     </div>
   </div>
 </div>
+<form id="wedding" name="wedding" method="post" enctype="multipart/form-data" action="<?php echo base_url;?>events/add_event">
 <div role="main" id="main" class=" clearfix" >
   <div class="container">
-    <header id="enter-details" class="row">
+	
+    <header id="enter-details" class="row enter-details1">
 	
 	<!-- <div class="col-md-8  center-align ">-->
       <div class="center-align ">
@@ -474,7 +628,10 @@ var base_url  = '<?php echo base_url;?>';
 		  </h3>
         </hgroup>
         <div class="row">
-          <h4 class="col-md-12 text-center"><input name="wedding_date" id="wedding_date" class="datepicker" value="Monday 14 April 2013"></h4>
+          <h4 class="col-md-12 text-center">
+		  <input name="wedding_date_text" id="wedding_date_text" class="datepicker" value="Monday 14 April 2014">
+		  <input type="hidden" name="wedding_date" id="weddingdate" value="2014-3-14">
+		  </h4>
         </div>
       </div>
     </header>
@@ -494,25 +651,35 @@ var base_url  = '<?php echo base_url;?>';
         <article id="content" class="col-md-9 center-align">
           <div class="row paddingBottom-3">
             <div class="col-md-10 center-align">
-						<form id="wedding">
+						
 						<input type="hidden" name="no_of_events" id="no_of_events" value="3"/>
+						<input type="hidden" name="user_id" id="user_id" value=""/>
               <section name="event[]" id="event_1" class="final-template border-gray event clearfix  ">
                 <div class="row">
                   <button type="button" class="btn btn-default deleteEventButton hide edit_event edit_event_1">Delete Event X</button>
                   <div class="col-md-12 text-center">
                     <div class="horz-border"></div>
-                    <div class="up-textContainer"> <em class="edit_event edit_event_1 hide" id="upload">Upload Photo</em> <span class="upload-photo"> <img src="<?php echo base_url;?>img/Wendills.jpg" class="img-circle img-responsive center-align main-template-image"> </span> </div>
+                    <div class="up-textContainer"> 
+											<!--<em class="edit_event edit_event_1 hide" id="upload">Upload Photo</em>-->
+											<div class="image-div" id="div1" rel="1">
+												<div class="fileinputs" id="fileinputs1"></div>
+											</div>
+											<span class="upload-photo">
+												<img src="<?php echo base_url;?>img/Wendills.jpg" class="img-circle img-responsive center-align main-template-image" id="event_image_1"> 
+											</span>
+										</div>
                     <hgroup class="template-heading">
                       <h2><span class="edit_text" id="span_event_name_1">Engagement</span>
 												<input type="text" name="event_name[]" id="input_event_name_1" class="editable event_text wedding text-center" value="Engagement">
 											</h2>
                       <h3>
-                        <input type="text" name="datepicker[]" id="datepicker_1" class="datepicker wedding" value="Monday 14 April 2013" value=""/>
+                        <input type="text" name="datepicker[]" id="datepicker_1" class="datepicker wedding" value="Monday 14 April 2014" value=""/>
+						<input type="hidden" name="date[]" value="2014-3-14">
                       </h3>
                     </hgroup>
-                    <div class="up-textContainer cal-text-gray"> <em>Add to calendar</em>
+                    <!--<div class="up-textContainer cal-text-gray"> <em>Add to calendar</em>
                       <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
-                    </div>
+                    </div>-->
                     <div class="horz-border"></div>
                     <img src="<?php echo base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image" id="1">
 										<div class="zoom_map" id="zoom_map_1">																						
@@ -528,7 +695,7 @@ var base_url  = '<?php echo base_url;?>';
 												110063
 											</p>
 											<p> RSVP: <span class="edit_text" id="span_rsvp_1">8989893234</span>
-												<input type="text" name="rsvp[]" id="input_rsvp_1" class="editable event_text wedding" value="8989893234">
+												<input type="text" name="rsvp[]" id="input_rsvp_1" class="editable event_text wedding" value="8989893234" style="width:90px;">
 											</p>
 											</address>
 										</div>
@@ -538,8 +705,7 @@ var base_url  = '<?php echo base_url;?>';
                   </div>
                 </div>
                 <br>
-              </section>
-              
+              </section>            
               
               <!-- event loop-->
               
@@ -548,19 +714,27 @@ var base_url  = '<?php echo base_url;?>';
                   <button type="button" class="btn btn-default deleteEventButton  edit_event edit_event_2 hide">Delete Event X</button>
                   <div class="col-md-12 text-center">
                     <div class="horz-border"></div>
-                    <div class="up-textContainer"> <em class="edit_event edit_event_2 hide">Upload Photo</em> 
-										<span class="upload-photo"> <img src="<?php echo base_url;?>img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span> </div>
+                    <div class="up-textContainer">
+											<!--<em class="edit_event edit_event_2 hide">Upload Photo</em> -->
+											<div class="image-div" id="div2" rel="1">
+												<div class="fileinputs" id="fileinputs2"></div>
+											</div>
+											<span class="upload-photo">
+												<img src="<?php echo base_url;?>img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image" id="event_image_2">
+											</span> 
+										</div>
                     <hgroup class="template-heading">
                       <h2><span class="edit_text" id="span_event_name_2">Mehndi</span>
 												<input type="text" name="event_name[]" id="input_event_name_2" class="editable event_text wedding text-center" value="Mehndi">
 											</h2>
                       <h3>
-                        <input type="text" name="datepicker[]" id="datepicker_2" class="datepicker wedding" value="Monday 14 April 2013"/>
+                        <input type="text" name="datepicker[]" id="datepicker_2" class="datepicker wedding" value="Monday 14 April 2014"/>
+						<input type="hidden" name="date[]" value="2014-3-14">
                       </h3>
                     </hgroup>
-										<div class="up-textContainer cal-text-gray"> <em>Add to calendar</em>
+										<!--<div class="up-textContainer cal-text-gray"> <em>Add to calendar</em>
 											<div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
-										</div>
+										</div>-->
                     <div class="horz-border"></div>
                     <img src="<?php echo base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image" id="2">
 										<div class="zoom_map" id="zoom_map_2">
@@ -578,7 +752,7 @@ var base_url  = '<?php echo base_url;?>';
                       110076                      
                     </p>
                     <p> RSVP: <span class="edit_text" id="span_rsvp_2">8989893234</span>
-											<input type="text" name="rsvp[]" id="input_rsvp_2" class="editable event_text wedding" value="8989893234">
+											<input type="text" name="rsvp[]" id="input_rsvp_2" class="editable event_text wedding" style="width:90px;" value="8989893234">
 										</p>
                     </address>
 							</div>
@@ -599,19 +773,27 @@ var base_url  = '<?php echo base_url;?>';
                   <button type="button" class="btn btn-default deleteEventButton hide edit_event edit_event_3">Delete Event X</button>
                   <div class="col-md-12 text-center">
                     <div class="horz-border"></div>
-										<div class="up-textContainer"> <em class="edit_event edit_event_3 hide">Upload Photo</em> 
-                    <span class="upload-photo"> <img src="<?php echo base_url;?>img/Indian-Bridal-Makeup-2.jpg" class="img-circle img-responsive center-align main-template-image-bigSize"> </span> </div>
+										<div class="up-textContainer">
+											<!--<em class="edit_event edit_event_3 hide">Upload Photo</em> -->
+											<div class="image-div" id="div3" rel="1">
+												<div class="fileinputs" id="fileinputs3"></div>
+											</div>
+											<span class="upload-photo">
+												<img src="<?php echo base_url;?>img/Indian-Bridal-Makeup-2.jpg" class="img-circle img-responsive center-align main-template-image-bigSize" id="event_image_3">
+											</span>
+										</div>
                     <hgroup class="template-heading">
                       <h2><span class="edit_text" id="span_event_name_3">Wedding</span>
 												<input type="text" name="event_name[]" id="input_event_name_3" class="editable event_text wedding text-center" value="Wedding">
 											</h2>
                       <h3>
-                        <input type="text" name="datepicker[]" id="datepicker_3" class="datepicker wedding" value="Monday 14 April 2013"/>
+                        <input type="text" name="datepicker[]" id="datepicker_3" class="datepicker wedding" value="Monday 14 April 2014"/>
+						<input type="hidden" name="date[]" value="2014-3-14">
                       </h3>
                     </hgroup>
-										<div class="up-textContainer cal-text-gray"> <em>Add to calendar</em>
+										<!--<div class="up-textContainer cal-text-gray"> <em>Add to calendar</em>
 											<div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
-										</div>
+										</div>-->
                     <div class="horz-border"></div>
                     <img src="<?php echo base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image" id="3">
 										<div class="zoom_map" id="zoom_map_3">
@@ -621,13 +803,13 @@ var base_url  = '<?php echo base_url;?>';
 										</div>
                     <div class="row">					
 											<address class="col-md-4 center-align">
-												<p id="add_2">Maharaja Grand Banquets
+												<p id="add_3">Maharaja Grand Banquets
 													A6.28 Paschim Vihar
 													New Delhi
 													110076                      
 												</p>
-												<p> RSVP: <span class="edit_text" id="span_rsvp_2">8989893234</span>
-													<input type="text" name="rsvp[]" id="input_rsvp_2" class="editable event_text wedding" value="8989893234">
+												<p> RSVP: <span class="edit_text" id="span_rsvp_3">8989893234</span>
+													<input type="text" name="rsvp[]" id="input_rsvp_3" class="editable event_text wedding" value="8989893234" style="width:90px;">
 												</p>
 											</address>
 										</div>
@@ -643,17 +825,16 @@ var base_url  = '<?php echo base_url;?>';
                   <button type="button" class="btn btn-info addEventButton  initial-button-blue">Add Another Event</button>
                 </div>
               </div>
-              <!--end one event loop--> 
-              
+              <!--end one event loop--> 							
             </div>
-						</form>
+						
 					</div>
         </article>
       </div>
     </section>
   </div>
 </div>
-
+</form>
 <!--footer-->
 <footer class="clearfix" id="step-2-footer">
   <article id="footer-bottom" class=" clearfix">

@@ -1,5 +1,22 @@
 <script type="text/javascript">
-
+		$(".datepicker" ).datepicker({dateFormat: 'DD dd MM yy',
+				onSelect: function (dateText) {
+				/* get the selected date */
+				var selectedDate = $(this).datepicker('getDate');
+				/* get the array of day names and month names from the date picker */
+				var dayNames = $(this).datepicker('option', 'dayNames');
+				/* default dayNames can be accessed using $.datepicker._defaults.dayNames; */
+				var monthNames = $(this).datepicker('option', 'monthNames');
+				/* default monthNames can be accessed using $.datepicker._defaults.monthNames; */
+				/* assign are vars */
+				var date = selectedDate.getDate();
+				var month = selectedDate.getMonth(); // taking the month name from the array of month names
+				var year = selectedDate.getFullYear();
+				/* update the ui */
+				//alert(year+'-'+month+'-'+ date);
+				$(this).next('input').val(year+'-'+month+'-'+ date);
+				}
+		});
 		$(".datepicker" ).datepicker({dateFormat: 'DD dd MM yy'});
 		$('.editable').addClass('hide');
 		$('.edit_text').click(function(){
@@ -23,7 +40,8 @@
 				$('.event').addClass('border-gray');
 				$('#'+id).removeClass('border-gray');	
 				$('#'+id).addClass('border-blue');	
-				
+				id = id.replace('event_', '');
+				initFileUploads(id);
 			});	
 		$('.deleteEventButton').click(function(){
 			$(this).closest('.event').fadeOut();
@@ -48,6 +66,72 @@
 			$('.address_input').keyup(function(){
 			codeAddress(this.id);
 		});
+		$('.save_address').click(function(){
+				var id = this.id.replace('save_', '');
+				var address = $('#address'+id).val();
+				$('#add_'+id).text(address);
+				$(".zoom_map").hide();
+				//event.stopPropagation();
+		});
+var W3CDOM = (document.createElement && document.getElementsByTagName);
+function initFileUploads(id){
+	var rel = $('#div'+id).attr('rel');
+	if(rel==1){
+		$('#div'+id).attr('rel', ++rel);
+		if (!W3CDOM) return;
+		var image = document.createElement('input');
+		image.type = 'file';
+		image.id = 'file_'+id;
+		image.name = 'image[]';
+		document.getElementById('fileinputs'+id).appendChild(image);
+		$('#file_'+id).addClass('file');
+		var fakeFileUpload = document.createElement('div');
+		fakeFileUpload.className = 'fakefile';
+		var href = document.createElement('em');
+		href.href='#';
+		href.id = 'attach_image';
+		href.class = 'edit_event';
+		href.class = 'edit_event_1';
+		href.innerHTML = "Upload photo";
+		
+		
+		fakeFileUpload.appendChild(href);
+		var file = document.createElement('input');
+		file.className = 'display';
+		file.id = 'fake_image';
+		fakeFileUpload.appendChild(file);
+		var x = document.getElementsByTagName('input');
+		for (var i=0;i<x.length;i++) {
+			if (x[i].type != 'file') continue;
+			if (x[i].parentNode.className != 'fileinputs') continue;
+			x[i].className = 'file';
+			var clone = fakeFileUpload.cloneNode(true);
+			x[i].parentNode.appendChild(clone);
+			x[i].relatedElement = clone.getElementsByTagName('input')[0];
+			x[i].onchange = function () {	
+				var ext = this.value.substring(this.value.lastIndexOf(".") + 1);
+				if((ext=='jpg')||(ext=='jpeg')||(ext=='png')||(ext=='bmp')||(ext=='gif')){
+					this.relatedElement.value = (this.value).replace("C:\\fakepath\\", '');
+					//$('#attach_image').remove();			
+					//$('#fake_image'+a).addClass('enlarge');
+				}else{
+						alert('Attach only image files');
+				}			
+			}
+		}		
+	}
+	$('.file').one('change', function(ev) {
+    var f = ev.target.files[0];
+    var fr = new FileReader();
+    
+    fr.onload = function(ev2) {
+        console.dir(ev2);
+        $('#event_image_'+id).attr('src', ev2.target.result);
+    };
+    
+    fr.readAsDataURL(f);
+		});
+}
 function initialize_map(id) {
 		geocoder = new google.maps.Geocoder();
     var latlng = new google.maps.LatLng(28.667696,77.093969);
@@ -78,13 +162,22 @@ function initialize_map(id) {
                   <button type="button" class="btn btn-default deleteEventButton hide edit_event edit_event_<?= $_GET['id']+1;?>">Delete Event X</button>
                   <div class="col-md-12 text-center">
                     <div class="horz-border"></div>
-                    <div class="up-textContainer"> <em class="edit_event edit_event_<?= $_GET['id']+1;?> hide">Upload Photo</em> <span class="upload-photo"> <img src="../img/Wendills.jpg" class="img-circle img-responsive center-align main-template-image"> </span> </div>
+                    <div class="up-textContainer">
+											<!--<em class="edit_event edit_event_<?= $_GET['id']+1;?> hide">Upload Photo</em> -->
+											<div class="image-div" id="div<?= $_GET['id']+1;?>" rel="1">
+												<div class="fileinputs" id="fileinputs<?= $_GET['id']+1;?>"></div>
+											</div>
+											<span class="upload-photo">
+												<img src="../img/Wendills.jpg" class="img-circle img-responsive center-align main-template-image" id="event_image_<?= $_GET['id']+1;?>">
+											</span> 
+										</div>
                     <hgroup class="template-heading">
                       <h2><span class="edit_text" id="span_event_name_<?= $_GET['id']+1;?>">Event Name</span>
-												<input name="event_name_<?= $_GET['id']+1;?>" id="input_event_name_<?= $_GET['id']+1;?>" class="editable event_text hide wedding">
+												<input name="event_name[]" id="input_event_name_<?= $_GET['id']+1;?>" class="editable event_text hide wedding" value="Event Name">
 											</h2>
                       <h3>
-                        <input type="text" id="datepicker_<?= $_GET['id']+1;?>" class="datepicker black wedding" placeholder="Event Date"/>
+                        <input type="text" name="datepicker[]" id="datepicker_<?= $_GET['id']+1;?>" class="datepicker wedding" value="Monday 14 April 2014"/>
+												<input type="hidden" name="date[]" value="2014-3-14">
                       </h3>
                     </hgroup>
                     <div class="up-textContainer cal-text-gray"> <em >Add to calendar</em>
@@ -93,19 +186,20 @@ function initialize_map(id) {
                     <div class="horz-border"></div>
                     <img src="../img/torino_google-map.png" class="img-circle  center-align map-image" id="<?= $_GET['id']+1;?>">
 										<div class="zoom_map" id="zoom_map_<?= $_GET['id']+1;?>">
-											<textarea id="address<?= $_GET['id']+1;?>" type="textbox" class="address_input wedding"></textarea>												
+											<textarea name="address[]" id="address<?= $_GET['id']+1;?>" type="textbox" class="address_input wedding">New Address</textarea>												
 											<div id="map_canvas_<?= $_GET['id']+1;?>" class="map_canvas"></div>
-											<input type="button" value="save" class="btn btn-info save_address" />
+											<input type="button" value="save" class="btn btn-info save_address" id="save_<?= $_GET['id']+1;?>"/>
 										</div>
-                    <address>
-                    <p>Maharaja Grand Banquets<br>
-                      A6.28 Paschim Vihar<br>
-                      New Delhi<br>
-                      110076<br>
-                      <br>
-                    </p>
-                    <p> RSVP: <span class="edit_text" id="span_rsvp_<?= $_GET['id']+1;?>">Contact no.</span>
-											<input name="rsvp_<?= $_GET['id']+1;?>" id="input_rsvp_<?= $_GET['id']+1;?>" class="editable event_text hide wedding">
+										<div class="row">					
+											<address class="col-md-4 center-align">
+                        <p id="add_<?= $_GET['id']+1;?>">Maharaja Grand Banquets
+												A6.28 Paschim Vihar
+												New Delhi
+												110076												
+											</p>
+										</div>
+                    <p> RSVP: <span class="edit_text" id="span_rsvp_<?= $_GET['id']+1;?>">6584456555</span>
+											<input name="rsvp[]" id="input_rsvp_<?= $_GET['id']+1;?>" class="editable event_text hide wedding" style="width:90px;" value="6584456555">
 										</p>
                     </address>
                     <div class=" phone-direction  col-md-5 col-md-offset-2">
