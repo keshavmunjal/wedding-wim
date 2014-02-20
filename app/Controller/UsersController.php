@@ -254,9 +254,9 @@ class UsersController extends AppController {
 		{
 			/*****Gmail Code******/
 			App::import('Vendor', 'GmailOath');
-			$sClientId = '365616338942-a341et2n3h0i1q6eb3d0fofgladpluhl.apps.googleusercontent.com';
-			$sClientSecret = 'XnN7ZEM9jEmxjikcxbW2CfoI';
-			$sCallback = 'http://localhost.com/gm/index.php'; // callback url, don't forget to change it to your!
+			$sClientId = '365616338942-pt7i2dnbs5ib9jicj1eg4ur67jtkpkjv.apps.googleusercontent.com';
+			$sClientSecret = 'ktEPKXQiL-vKcqtRnsBYUcjY';
+			$sCallback = 'http://shaadiseason.in/users/step3'; // callback url, don't forget to change it to your!
 			$iMaxResults = 100; // max results
 			$sStep = 'auth'; // current step
 			
@@ -282,13 +282,19 @@ class UsersController extends AppController {
 				$aContacts = $oGetContacts->GetContacts($oAuth, $sAccessToken, $sAccessTokenSecret, false, true, $iMaxResults);
 
 				// turn array with contacts into html string
+				$contact = array();
+				$count = 0;
 				$sContacts = $sContactName = '';
 				foreach($aContacts as $k => $aInfo) {
 					$sContactName = end($aInfo['title']);
 					$aLast = end($aContacts[$k]);
 					foreach($aLast as $aEmail) {
-						echo $sContacts .= '<p>' . $sContactName . '(' . $aEmail['address'] . ')</p>';
+						$contact[$count]['name'] = $sContactName;
+						$contact[$count++]['email'] = $aEmail['address'];
+						$sContacts .= '<p>' . $sContactName . '(' . $aEmail['address'] . ')</p>';
 					}
+				$this->set('contact',$contact);
+				$this->set('invite_gmail','1');
 				}
 			} else {
 				// prepare access token and set it into session

@@ -1,4 +1,48 @@
 <body id="step3">
+
+<!--<div class="modal fade bs-modal-lg in" >-->
+	<div class="modal fade bs-modal-lg"  id="my_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title">Send Invite to your gmail friends</h4>
+		  </div>
+		  <div class="modal-body" style=" max-height: 234px; overflow: overlay; ">
+			<div class="row">
+			<div class="col-md-10 center-align">
+			<table class="table table-hover" id="contact_list">
+			   <thead>
+				<tr>
+				   <th><span class="glyphicon glyphicon-envelope"></span></th>
+				   <th>Email</th>
+				   <th><input type="checkbox" checked value="1"></th>
+				</tr>
+			   </thead>
+			   <tbody>
+				<?php if($contact){
+				foreach($contact as $c){
+				?>
+				<tr class="warning">
+				   <td><span class="glyphicon glyphicon-user"></span></td>
+				   <td><?php echo $c['name'].' "'.$c['email'].'"';?></td>
+				   <td><input type="checkbox" checked value="<?php echo $c['email']?>"><span class="glyphicon glyphicon-ok" style="color:green;display:none;"></span></td>
+				</tr>
+				<?php }}?>
+				</tbody>
+			</table>
+			</div>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary" id="send">Send Invites</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+
 <!-- top navigation and logo -->
 <header role = "banner">
   <div class="container">
@@ -59,7 +103,8 @@
 <div class="col-md-8 col-sm-8 text-right ">
 
 <form class="form-inline" role="form">
- <em>www.shaadiseason.in/sites/<?php echo $websiteDetails['url']?></em>
+ <em>www.shaadiseason.in/sites/</em>
+ <input type="text" class="form-control" id="user-link" placeholder="<?php echo $websiteDetails['url']?>" value="<?php echo $websiteDetails['url']?>">
  <!--<input type="text" class="form-control" id="user-link" placeholder="<?php echo $websiteDetails['url']?>" disabled>-->
   
 </form>
@@ -168,8 +213,8 @@
 
 <div class="col-md-4" id="friend-request">
 
-<!--<button type="button" class="btn  btn-info  my-button" id="send">Send to Friend</button>-->
-<a href="https://www.google.com/accounts/OAuthAuthorizeToken?oauth_token=<?php echo $token;?>" type="button" class="btn  btn-info  my-button" id="send">Send to Friend</a>
+<button type="button" class="btn  btn-info  my-button">Send to Friend</button>
+<!--<a href="https://www.google.com/accounts/OAuthAuthorizeToken?oauth_token=<?php echo $token;?>" type="button" class="btn  btn-info  my-button" id="send">Send to Friend</a>-->
 </div>
 
 
@@ -188,7 +233,8 @@
 <br>
  
  
- 
+<section class="row" style="margin:0;">
+
  
 
 
@@ -266,8 +312,8 @@
 			  <h3>
 			  Share Awesomness
 			  </h3>
-			  <li id="facebook"><a href="#"></a></li>
-			   <li id="gplus"><a href="#"></a></li>
+			  <li id="facebook"><a href="javascript:void(0)" onclick="FacebookInviteFriends();"></a></li>
+			   <li id="gplus"><a href="https://www.google.com/accounts/OAuthAuthorizeToken?oauth_token=<?php echo $token;?>"></a></li>
 			  
 			  </ul>
 			  
@@ -365,12 +411,59 @@
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script> 
 <!-- Custom JavaScript --> 
 <script src="js/custom.js"></script>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
 <script>
+FB.init({
+	appId:'219248094942150',
+	cookie:true,
+	status:true,
+	xfbml:true
+	});
+
+	function FacebookInviteFriends()
+	{
+	FB.ui({
+	method: 'apprequests',
+	message: 'Visit to out site, and create your own wedding site. http://shaadiseason.in/'
+	});
+	}
 $(document).ready(function(){
-	/* $('#send').click(function(){
-		//alert("sdfd");
-		$('#my_modal').modal('show');
-	}); */
+var base_url = '<?php echo base_url;?>';
+
+
+	
+
+	<?php if(isset($contact)){?>
+	$('#my_modal').modal('show');
+	<?}?>
+	
+	$('#send').click(function(){
+		$('#contact_list').find('tbody tr > td:last-child input:checkbox')
+		.each(function(){
+			if(this.checked)
+			{
+				//alert($(this).val());
+				email = $(this).val();
+				var that = this;
+				$.get(base_url+'events/sendInvite','email='+email,function(res){
+					$(that).hide();
+					$(that).next('.glyphicon').fadeIn();
+					$(that).remove();
+				});
+			}
+		});
+	});
+	
+	$('#contact_list th input:checkbox').on('click' , function(){
+	//alert("sdfds");
+		var that = this;
+		$(this).closest('table').find('tr > td:last-child input:checkbox')
+		.each(function(){
+			this.checked = that.checked;
+			$(this).closest('tr').toggleClass('selected');
+		});
+			
+	});
 
 });
 </script>
