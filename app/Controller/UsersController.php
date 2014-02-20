@@ -355,7 +355,7 @@ class UsersController extends AppController {
 		}
 	}
 	
-	public function edit_user(){
+	public function edit_event(){
 		$userId = $this->Session->read('userId');
 		if($userId){
 			$wedding_details = $this->Wedding_details->find('all', array('conditions' => array('user_id' => $userId)));

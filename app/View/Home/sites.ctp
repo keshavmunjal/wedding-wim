@@ -359,7 +359,7 @@ var base_url  = '<?php echo base_url;?>';
 					<?php $userId = $this->Session->read('userId');
 						if($userId){
 					?>
-						<a href="<?php echo  base_url;?>users/edit_user">Edit</a>
+						<a href="<?php echo  base_url;?>users/edit_event">Edit</a>
 						<a href="<?php echo  base_url;?>users/login_new">Logout</a>
 					<?php }?>
 					  <!--<a href="#my_modal" data-toggle="modal" data-target="#my_modal">Register</a>-->
