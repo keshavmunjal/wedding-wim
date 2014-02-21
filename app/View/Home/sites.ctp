@@ -361,7 +361,7 @@ var base_url  = '<?php echo base_url;?>';
 					?>
 						<a href="<?php echo  base_url;?>users/edit_event">Edit</a>
 						<a href="<?php echo  base_url;?>users/step3">Invites</a>
-						<a href="<?php echo  base_url;?>users/login_new">Logout</a>
+						<a href="<?php echo  base_url;?>users/logout">Logout</a>
 					<?php }?>
 					  <!--<a href="#my_modal" data-toggle="modal" data-target="#my_modal">Register</a>-->
 			 </aside>
@@ -424,8 +424,20 @@ var base_url  = '<?php echo base_url;?>';
                 <div class="row">
                   <button type="button" class="btn btn-default deleteEventButton hide edit_event edit_event_1">Delete Event X</button>
                   <div class="col-md-12 text-center">
-                    <div class="horz-border"></div>
-                    <div class="up-textContainer"> <em class="edit_event edit_event_1 hide" id="upload">Upload Photo</em> <span class="upload-photo"> <img src="<?php echo base_url;?>app/webroot/files/images/big/<?php echo $e['Events']['event_image']?>" class="img-circle img-responsive center-align main-template-image"> </span> </div>
+											<div class="horz-border"></div>
+											<div class="up-textContainer"> 
+											<em class="edit_event edit_event_1 hide" id="upload">Upload Photo</em> 
+											<span class="upload-photo">
+											<?php
+												if($e['Events']['event_image']!=''){
+													$src = "files/images/big/".$e['Events']['event_image'];
+												}else{
+													$src = "img/noimage.jpg";
+												}
+											?>
+												<img src="<?php echo base_url.$src;?>" class="img-circle img-responsive center-align main-template-image">
+											</span>
+										</div>
                     <hgroup class="template-heading">
                       <h2><span class="edit_text" id="span_event_name_1"><?php echo $e['Events']['event_title']?></span>
 											</h2>

@@ -83,7 +83,7 @@ class EventsController extends AppController {
 		}
 	}*/
 	public function add_event() {
-	//echo "sdfds";exit;
+	pr($_FILES);
 		$user = array();
 		//$user = $this->Users->create();
 		//$user['Users']['user_name'] = $_POST['user_name'];
@@ -103,6 +103,7 @@ class EventsController extends AppController {
 		
 		if ($this->request->is('post')) {
 			for($i=0; $i<$_POST['no_of_events']; $i++){
+				$upload = false;
 				if($_FILES['image']['name'][$i]!=""){
 					$image = array();
 					$image['name'] = $_POST['user_id'].date('YmdHis').$_FILES['image']['name'][$i];
@@ -225,13 +226,36 @@ class EventsController extends AppController {
 	}
 	
 	public function update_event(){
-		//print_r($this->request->data);exit;
+	//pr($_FILES);
+			for($i=0; $i<count($this->request->data['event_id']); $i++){
+			$file = "image".$this->request->data['event_id'][$i];
+			if(array_key_exists($file, $_FILES)){
+				$image = array();
+				$image['name'] = $_POST['user_id'].date('YmdHis').$_FILES[$file]['name'];
+				$image['type'] = $_FILES[$file]['type'];
+				$image['tmp_name'] = $_FILES[$file]['tmp_name'];
+				$image['error'] = $_FILES[$file]['error'];
+				$image['size'] = $_FILES[$file]['size'][$i];
+				if($this->UploadComp->upload_FS($image)){
+					$upload['event_id'][$i] = $this->request->data['event_id'][$i];					
+					$upload['name'][$i] = $image['name'];					
+				}else{
+					$upload = false;
+				}
+				//unset($_FILES[$file]);
+				
+			}
+		}
+		
+		
+		//echo  count($_FILES);
+	
 		if ($this->request->is('post')) {
 			$this->loadModel('Wedding_detail');
 			$wed = $this->Wedding_detail->update_wed($this->request->data);
 			//var_dump($wed);
 			$this->loadModel('Event');
-			$eve = $this->Event->update_eve($this->request->data);
+			$eve = $this->Event->update_eve($this->request->data, $upload);
 			//var_dump($eve);
 			$url = $this->Microwebsites->find('all' ,array('conditions'=> array('user_id' => $this->request->data['user_id'])));
 			

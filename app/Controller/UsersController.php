@@ -324,6 +324,7 @@ class UsersController extends AppController {
 	public function new_event(){
 		$this->layout = 'ajax';
 		$this->register = 'new_event';
+		
 	}
 	public function checkurl(){
 		
@@ -356,16 +357,17 @@ class UsersController extends AppController {
 				$this->Session->write('user_name',$user['user_name']);
 				$data = $this->Microwebsites->find('all',array('conditions'=>array('user_id'=>$user['id'])));
 				$url = $data[0]['Microwebsites']['url'];
-				$this->redirect(array(
+				echo $url;
+				/*$this->redirect(array(
 					'controller' => 'home',
 					'action' => 'sites/'.$url,
 					
-				));
+				));*/
 			}
 			else
 			{
-				echo "FAIL";
-			}
+				echo "fail";
+			}exit;
 		}
 	}
 	
@@ -374,16 +376,48 @@ class UsersController extends AppController {
 		if($userId){
 			$wedding_details = $this->Wedding_details->find('all', array('conditions' => array('user_id' => $userId)));
 			$events = $this->Events->find('all', array('conditions' => array('user_id' => $userId)));
-			$theme_id = $this->Session->read('Users.themeId');
+			$mv = $this->Microwebsites->find('all', array('conditions' => array('user_id' => $userId)));
+			$theme_id = $mv[0]['Microwebsites']['theme_id'];
+			$url = $mv[0]['Microwebsites']['url'];
 			$theme= $this->Themes->find('all', array('conditions' => array('id' => $theme_id)));
 			//pr($events);exit;
 			$this->set('wedding', $wedding_details[0]['Wedding_details']);
 			$this->set('events', $events);
 			$this->set('themeId', $theme_id);
+			$this->set('url', $url);
 			$this->set('theme', $theme[0]['Themes']);
+		}else{
+			$this->redirect(array(
+				'controller' => 'users',
+				'action' => 'login_new'
+			));
 		}
 	}
 	
+	public function logout(){
+		$this->Session->destroy();
+		$this->redirect(array(
+			'controller' => 'users',
+			'action' => 'login_new'
+		));
+	}
 	
+	public function edit_new_event(){
+		$this->layout = 'ajax';
+		$this->register = 'new_event';
+		$data = array();
+		$data = $this->Events->create();
+		$data['Events']['user_id'] = $this->Session->read('userId');
+		$data['Events']['event_title'] = "Event Name";
+		$data['Events']['event_date'] = "2014-3-14";
+		$data['Events']['event_date_text'] = "Monday 14 April 2014";
+		$data['Events']['event_image'] = "noimage.jpg";
+		$data['Events']['venue'] = "address";
+		$data['Events']['rsvp'] = "656959299";
+		$data['Events']['created_date'] = date('Y-m-d H:i:s');
+		$data['Events']['last_modified'] = date('Y-m-d H:i:s');
+		$res = $this->Events->save($data);
+		$this->set('id', $res['Events']['id']);
+	}
 	
 }

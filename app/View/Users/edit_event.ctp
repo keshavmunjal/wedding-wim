@@ -221,7 +221,7 @@ var editable = true;
 	
 		var geocoder;
 		var map;
-		var last_id = 3;
+		var last_id = <?= count($events);?>;
 		$(".datepicker" ).datepicker({dateFormat: 'DD dd MM yy',
 				onSelect: function (dateText) {
 				/* get the selected date */
@@ -298,7 +298,7 @@ var editable = true;
 		});
 		$('.addEventButton').click(function(){
 			$.ajax({
-					url:"new_event",
+					url:"edit_new_event",
 					data:{id:last_id},
 					type:"GET",
 					beforeSend:function(){
@@ -373,7 +373,8 @@ var editable = true;
 			var options = { 
 				success: function(data) 
 				{
-					window.location.href = "<?php echo base_url;?>home/sites/"+data;
+				//alert(data);return false;
+					window.location.href = "<?php echo base_url;?>home/sites/<?php echo $url?>";
 				},
 				error: function()
 				{
@@ -397,7 +398,7 @@ function initFileUploads(id){
 		var image = document.createElement('input');
 		image.type = 'file';
 		image.id = 'file_'+id;
-		image.name = 'image[]';
+		image.name = 'image'+$('#fileinputs'+id).attr('rel');
 		document.getElementById('fileinputs'+id).appendChild(image);
 		$('#file_'+id).addClass('file');
 		var fakeFileUpload = document.createElement('div');
@@ -582,15 +583,22 @@ function initFileUploads(id){
                 <div class="row">
                   <button type="button" class="btn btn-default deleteEventButton hide edit_event edit_event_<?php echo $i+1;?>">Delete Event X</button>
                   <div class="col-md-12 text-center">
-										<input type="hidden" name="event_id[]" value="<?php echo $events[$i]['Events']['id'];?>"/>
+										<input type="hidden" name="event_id[]" id="event_id<?php echo $i+1;?>" value="<?php echo $events[$i]['Events']['id'];?>"/>
                     <div class="horz-border"></div>
                     <div class="up-textContainer"> 
 											<!--<em class="edit_event edit_event_<?php echo $i+1;?> hide" id="upload">Upload Photo</em>-->
 											<div class="image-div" id="div<?php echo $i+1;?>" rel="1">
-												<div class="fileinputs" id="fileinputs<?php echo $i+1;?>"></div>
+												<div class="fileinputs" id="fileinputs<?php echo $i+1;?>" rel="<?php echo $events[$i]['Events']['id'];?>"></div>
 											</div>
 											<span class="upload-photo">
-												<img src="<?php echo base_url;?>files/images/big/<?php echo $events[$i]['Events']['event_image'];?>" class="img-circle img-responsive center-align main-template-image" id="event_image_<?php echo $i+1;?>"> 
+											<?php
+												if($events[$i]['Events']['event_image']!=''){
+													$src = "files/images/big/".$events[$i]['Events']['event_image'];
+												}else{
+													$src = "img/noimage.jpg";
+												}
+											?>
+												<img src="<?php echo base_url.$src;?>" class="img-circle img-responsive center-align main-template-image" id="event_image_<?php echo $i+1;?>"> 
 											</span>
 										</div>
                     <hgroup class="template-heading">

@@ -66,32 +66,38 @@ class HomeController extends AppController {
 	}
 	public function sites($url='')
 	{
-		if($url!="")
-		{
-			$data = $this->Microwebsites->find('all',array('conditions'=>array('url'=>$url)));
-			$mv = $data[0]['Microwebsites'];
-			if($data)
+		$userid = $this->Session->read('userId');//echo $userid;exit;
+		if($userid){
+			if($url!="")
 			{
-				$weddingdata = $this->Wedding_details->find('all',array('conditions'=>array('user_id'=>$mv['user_id'])));
-				$data = $this->Users->find('all',array('conditions'=>array('id'=>$mv['user_id'])));
-				$user = $data[0]['Users'];
-				$events = $this->Events->find('all',array('conditions'=>array('user_id'=>$mv['user_id'])));
-				//pr($events);
-				//pr($user);
-				//pr($mv);
-				$this->set('wedding',$weddingdata[0]['Wedding_details']);
-				$this->set('events',$events);
+				$data = $this->Microwebsites->find('all',array('conditions'=>array('url'=>$url)));
+				$mv = $data[0]['Microwebsites'];
+				if($data)
+				{
+					$weddingdata = $this->Wedding_details->find('all',array('conditions'=>array('user_id'=>$mv['user_id'])));
+					$data = $this->Users->find('all',array('conditions'=>array('id'=>$mv['user_id'])));
+					$user = $data[0]['Users'];
+					$events = $this->Events->find('all',array('conditions'=>array('user_id'=>$mv['user_id'])));
+					//pr($events);
+					//pr($user);
+					//pr($mv);
+					$this->set('wedding',$weddingdata[0]['Wedding_details']);
+					$this->set('events',$events);
+				}
+				else
+				{
+					echo "not found url";exit;
+				}
 			}
 			else
 			{
-				echo "not found url";exit;
+				echo "notfound";exit;
 			}
-		}
-		else
-		{
-			echo "notfound";exit;
+		}else{
+			throw new ForbiddenException();
 		}
 	}
+	
 	public function sendInvite() {
 	
 		$email = $_POST['email'];

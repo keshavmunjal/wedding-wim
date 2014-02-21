@@ -140,45 +140,59 @@ class Event extends AppModel {
 		)
 	);
 
-	public function update_eve($data){
-	//pr($data);
+	public function update_eve($data, $files){
+	pr($files);
 		$db = $this->getDataSource();
 		for($i=0; $i<$data['no_of_events']; $i++){
-				
+			echo $f = array_search($data['event_id'][$i], $files['event_id']);
+			if(isset($data['event_id'][$i])){
+				//var_dump(in_array($data['event_id'][$i], $files['event_id']));
 				$temp = array();
 				//$event = $this->Events->create();
 				//$event['Events']['user_id'] = $data['user_id'];
 				$temp['event_title'] = $db->value($data['event_name'][$i], 'string');
 				$temp['event_date'] = $data['date'][$i];
 				$temp['event_date_text'] = $db->value($data['datepicker'][$i], 'string');
-				/*if($upload){
-					$temp['event_image'] = $image['name'];
-				}*/
+				//var_dump($f);
+				$temp['event_image']='';
+				if(gettype($f)=='integer'){
+					
+					$temp['event_image'] = $db->value($files['name'][$f], 'string');
+				}
+				echo $temp['event_image'];
 				$temp['venue'] = $db->value($data['address'][$i], 'string');
 				$temp['rsvp'] = $db->value($data['rsvp'][$i], 'string');
 				$temp['last_modified'] = $db->value(date('Y-m-d H:i:s'), 'string');
 				$data['event_id'][$i];
-				$sql = "UPDATE `shaadise_staging`.`events` AS `Event` SET `Event`.`event_title` = ".$temp['event_title'].", `Event`.`event_date` = ".$temp['event_date'].", `Event`.`event_date_text` = ".$temp['event_date_text'].", `Event`.`venue` = ".$temp['venue'].", `Event`.`rsvp` = ".$temp['rsvp'].", `Event`.`last_modified` = ".$temp['last_modified']." WHERE `id` = ".$data['event_id'][$i]."";
-				
+				if($temp['event_image']!=''){
+					$sql = "UPDATE `shaadise_staging`.`events` AS `Event` SET `Event`.`event_title` = ".$temp['event_title'].", `Event`.`event_date` = ".$temp['event_date'].", `Event`.`event_date_text` = ".$temp['event_date_text'].", `Event`.`event_image` = ".$temp['event_image'].", `Event`.`venue` = ".$temp['venue'].", `Event`.`rsvp` = ".$temp['rsvp'].", `Event`.`last_modified` = ".$temp['last_modified']." WHERE `id` = ".$data['event_id'][$i]."";
+				}else{
+					$sql = "UPDATE `shaadise_staging`.`events` AS `Event` SET `Event`.`event_title` = ".$temp['event_title'].", `Event`.`event_date` = ".$temp['event_date'].", `Event`.`event_date_text` = ".$temp['event_date_text'].", `Event`.`venue` = ".$temp['venue'].", `Event`.`rsvp` = ".$temp['rsvp'].", `Event`.`last_modified` = ".$temp['last_modified']." WHERE `id` = ".$data['event_id'][$i]."";
+				}
 				$update = $this->Event->query($sql);
-				return $update;
-				/*$update = $this->updateAll(
-					$temp,
-					array('id' => 7)
-				);*/
-				//var_dump($update);exit;
+				//return $update;
+			}else{
+			//echo "vfyva";
+				$temp = array();
+				//$temp = $this->create();
+				$temp['user_id'] = $data['user_id'];
+				$temp['event_title'] = $data['event_name'][$i];
+				$temp['event_date'] = $data['date'][$i];
+				$temp['event_date_text'] = $data['datepicker'][$i];
+				/*if($upload){
+					$temp['Events']['event_image'] = $image['name'];
+				}*/
+				$temp['venue'] = $data['address'][$i];
+				$temp['rsvp'] = $data['rsvp'][$i];
+				$temp['created_date'] = date('Y-m-d H:i:s');
+				$temp['last_modified'] = date('Y-m-d H:i:s');pr($temp);
+				$res = $this->save($temp);var_dump($res);
+			}	
+				
+				
 			}
 			
-			/*$temp = array();
-			$groom = $db->value($data['groom'], 'string');
-			$temp['groom'] = $groom;
-			$bride = $db->value($data['bride'], 'string');
-			$temp['bride'] = $bride;
-			$temp['wedding_date'] = $data['wedding_date'];
-			$date = $db->value($data['wedding_date_text'], 'string');
-			$temp['wedding_date_text'] = $date;
 			
-			*/
 		
 	}
 }

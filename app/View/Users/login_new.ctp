@@ -62,55 +62,28 @@
 
                 }
             });
-            $('#send_email').click(function () {
-
-                var email = $('#email').val();
-                if (IsEmail(email)) {
-                    //alert('right');
-                    $('#email').removeClass('wrong');
-                    $('#email').addClass('right');
-                } else {
-                    //alert('wrong');
-                    $('#email').removeClass('right');
-                    $('#email').addClass('wrong');
-
-                }
-                if (IsEmail(email)) {
-                    data = 'email=' + email;
-
-
-                    /***********Sending mail to welcome the user*************/
-                    $.ajax({
-                        url: 'home/sendInvite',
-                        type: 'POST',
-                        data: data,
-                        beforeSend: function () {
-                            $('#form').hide();
-                            $("#beta_invite").show();
-                            //$('#preloader').show();
-                        },
-                        success: function (res) {
-                            if(res=='Success')
-							{
-								$('#welcome_message').show();
-								testAnim('pulse',$('#welcome_message'));
-								setTimeout(function () {
-									$('#welcome_message').fadeOut();
-								}, 3000);
-							}
-							else
-							{
-								$('#exist_message').show();
-								testAnim('pulse',$('#exist_message'));
-								setTimeout(function () {
-									$('#exist_message').fadeOut();
-								}, 3000);
-							}
-                        }
-                    });
-
-                    //alert('<?php echo base_url;?>');
-                }
+            $('#login').click(function () {
+							var email = $('#loginEmail').val();
+							var password = $('#loginPassword').val();
+							var data = "loginEmail="+email+"&loginPassword="+password;
+							/***********Sending mail to welcome the user*************/
+              $.ajax({
+                  url: '<?php echo base_url;?>users/login_new',
+                  type: 'POST',
+                  data: data,
+                  success: function (res) {
+                    if(res!='fail'){
+											window.location.href = '<?php echo  base_url;?>home/sites/'+res;
+										}
+										else{
+											$('#fail').show();
+											testAnim('pulse',$('#fail'));
+											setTimeout(function () {
+												$('#fail').fadeOut();
+											}, 3000);
+										}
+									}
+							});								
             });
         });
     </script>
@@ -129,11 +102,10 @@
 				<br />
 			</p>
 			
-			
+			<div id="fail" class="" style="display:none;text-align:center;color:red;margin:15px 0px;">Invalid email and password. Try again.</div>
 			<div class="clo-xs-12">
 				<section class="col-md-4 center-align">
-					<form role="form" method="post" id="loginForm" action="<?php echo base_url;?>users/login_new">
-					  <div class="form-group">
+					<div class="form-group">
 						<label for="exampleInputEmail1">Email address</label>
 						<input type="email" name="loginEmail" class="form-control" id="loginEmail" placeholder="Enter email">
 					  </div>
@@ -146,8 +118,7 @@
 						  <input type="checkbox"> Remember me
 						</label>
 					  </div>
-					  <button type="submit" class="btn btn-default">Let me in</button>
-					</form>
+					  <button class="btn btn-default" id="login">Let me in</button>					
 				</section>
 			</div>
 			<div class="clo-xs-12 align_center" id="preloader" style="display:none;">

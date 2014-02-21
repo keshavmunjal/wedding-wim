@@ -35,7 +35,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins)  -->
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <!-- Latest compiled and minified JavaScript --> 
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script> 
@@ -51,6 +51,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		echo $this->Html->css('custom');
 		//echo $this->Html->script('map');
 		//echo $this->Html->script('jquery.validate.min');
+		
 	?>
 	
 

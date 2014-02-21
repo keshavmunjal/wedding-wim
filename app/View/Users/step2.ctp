@@ -779,7 +779,7 @@ function initFileUploads(id){
 												<div class="fileinputs" id="fileinputs3"></div>
 											</div>
 											<span class="upload-photo">
-												<img src="<?php echo base_url;?>img/Indian-Bridal-Makeup-2.jpg" class="img-circle img-responsive center-align main-template-image-bigSize" id="event_image_3">
+												<img src="<?php echo base_url;?>img/Indian-Bridal-Makeup-2.jpg" class="img-circle img-responsive center-align main-template-image" id="event_image_3">
 											</span>
 										</div>
                     <hgroup class="template-heading">
