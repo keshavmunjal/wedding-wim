@@ -28,7 +28,7 @@ class EventsController extends AppController {
 								'allow_non_image_files' => true,
 							)
 						);
-	public $uses = array('Events', 'Users','Wedding_details', 'Microwebsites');
+	public $uses = array('Events', 'Users','Wedding_details', 'Microwebsites','Invite_logs');
 /**
  * index method
  *
@@ -269,16 +269,31 @@ class EventsController extends AppController {
 	
 	function sendInvite()
 	{
+		$userId = $this->Session->read('userId');
 		if ($this->RequestHandler->isAjax())
 		{
+			$eventId = $_GET['eventId'];
+			$data = $this->Events->find('all', array('conditions' => array('id' => $eventId)));
+			$event = $data[0]['Events'];
 			$to = ($_GET['email']);
-			$Email = new CakeEmail();
-			$Email->template('card')
-			->emailFormat('html')
-			->to($to)
-			->subject('Invitation')
-			->from('ShaadiSeason@shaadiseason.com')
-			->send();
+			
+			$emails = explode(',',$to);
+			foreach($emails as $index=>$key)
+			{
+				$data['Invite_logs']['user_id']=$userId;
+				$data['Invite_logs']['to']=$key;
+				$data['Invite_logs']['event_id']=$eventId;
+				$this->Invite_logs->save($data);
+				
+				$Email = new CakeEmail();
+				$Email->template('card')
+				->viewVars(array('event' => $event,'to'=>$key))
+				->emailFormat('html')
+				->to($to)
+				->subject('Invitation')
+				->from('ShaadiSeason@shaadiseason.com')
+				->send();
+			}
 		}
 		else
 		{

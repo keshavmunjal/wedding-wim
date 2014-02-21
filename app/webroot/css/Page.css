@@ -11,6 +11,18 @@
     background-position: 0% 0%;
     background-repeat: no-repeat no-repeat;
 }
+.primaryContainer1 {
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 500px;
+    width: 100%;
+    background-image:url("../img/background.jpg");
+    background-attachment: fixed;
+    background-size: auto;
+    background-position: 0% 0%;
+    background-repeat: no-repeat no-repeat;
+}
 
 #image {
     float: none;

@@ -359,9 +359,18 @@ var base_url  = '<?php echo base_url;?>';
 					<?php $userId = $this->Session->read('userId');
 						if($userId){
 					?>
-						<a href="<?php echo  base_url;?>users/edit_event">Edit</a>
-						<a href="<?php echo  base_url;?>users/step3">Invites</a>
-						<a href="<?php echo  base_url;?>users/logout">Logout</a>
+						<span class="dropdown text-left">
+							<button type="button" class="btn btn-default dropdown-toggle header-option" data-toggle="dropdown">
+								Hello <?php echo $this->Session->read('user_name')?> <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu clearfix header-ul" role="menu">
+							  <li><a href="<?php echo base_url.'home/sites/'.$websiteDetails['url']?>">Your Site</a></li>
+							  <li><a href="<?php echo  base_url;?>users/edit_event">Edit Site</a></li>
+							  <li><a href="<?php echo  base_url;?>users/step3">Invite Friends</a></li>
+							  <li><a href="<?php echo  base_url;?>users/invite_log">Invite Log</a></li>
+							  <a href="<?php echo  base_url;?>users/logout">Logout</a>
+							</ul>
+						</span>
 					<?php }?>
 					  <!--<a href="#my_modal" data-toggle="modal" data-target="#my_modal">Register</a>-->
 			 </aside>

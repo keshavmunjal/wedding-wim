@@ -16,7 +16,7 @@ class UsersController extends AppController {
  * @var array
  */
 	public $components = array('Paginator');
-	public $uses = array('Themes','Users','Microwebsites','Wedding_details','Events');
+	public $uses = array('Themes','Users','Microwebsites','Wedding_details','Events','Invite_logs');
 
 /**
  * index method
@@ -385,6 +385,7 @@ class UsersController extends AppController {
 			$this->set('events', $events);
 			$this->set('themeId', $theme_id);
 			$this->set('url', $url);
+			$this->set('websiteDetails',$mv[0]['Microwebsites']);
 			$this->set('theme', $theme[0]['Themes']);
 		}else{
 			$this->redirect(array(
@@ -418,6 +419,23 @@ class UsersController extends AppController {
 		$data['Events']['last_modified'] = date('Y-m-d H:i:s');
 		$res = $this->Events->save($data);
 		$this->set('id', $res['Events']['id']);
+	}
+	public function invite_log()
+	{
+		$userId = $this->Session->read('userId');
+		if($userId){
+			$invite = $this->Invite_logs->find('all',array('conditions'=>array('user_id'=>$userId)));
+			$websiteDetails = $this->Microwebsites->find('all',array('conditions'=>array('user_id'=>$userId)));
+			
+			
+			$this->set('websiteDetails',$websiteDetails[0]['Microwebsites']);
+			
+			$this->set('invite',$invite);
+		}
+		else
+		{
+			throw new ForbiddenException();
+		}
 	}
 	
 }

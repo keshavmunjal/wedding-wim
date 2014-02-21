@@ -482,8 +482,23 @@ function initFileUploads(id){
       <article class="col-md-6 col-lg-6 col-sm-6"> <img src="<?php echo base_url;?>img/logo.png" class="img-responsive" alt="" id="logo"> </article>
       <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> 
 				<a href="javascript:void(0)" id="edit-mode-link">Edit Mode</a> 
-				<a href="javascript:void(0)" id="update">Update</a> 
-				<a href="<?php echo base_url;?>users/login_new" id="update">Logout</a> 
+				<a href="javascript:void(0)" id="update">Update</a>
+				<?php $userId = $this->Session->read('userId');
+				if($userId){
+				?>
+					<span class="dropdown text-left">
+						<button type="button" class="btn btn-default dropdown-toggle header-option" data-toggle="dropdown">
+							Hello <?php echo $this->Session->read('user_name')?> <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu clearfix header-ul" role="menu">
+						  <li><a href="<?php echo base_url.'home/sites/'.$websiteDetails['url']?>">Your Site</a></li>
+						  <li><a href="<?php echo  base_url;?>users/edit_event">Edit Site</a></li>
+						  <li><a href="<?php echo  base_url;?>users/step3">Invite Friends</a></li>
+						  <li><a href="<?php echo  base_url;?>users/invite_log">Invite Log</a></li>
+						  <li><a href="<?php echo  base_url;?>users/logout">Logout</a></li>
+						</ul>
+					</span>
+				<?php }?>
 			</aside>
     </div>
     <!--end row--> 

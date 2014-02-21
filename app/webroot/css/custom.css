@@ -798,7 +798,7 @@ font-size:4em;}
 font-size:2em;}
 
 #topEditLink{position:absolute;
-right:0;  z-index:999;}
+right:0;  z-index:99;}
 
 .initial-relative{position:relative;}
 
@@ -1011,3 +1011,33 @@ p.social{overflow:hidden; clear:both; color:#fff; font-size:12px; padding-left:4
 .button{padding-left:10px;}
 
 /*invite box*/
+
+/*DropDown*/
+.header-option{
+color: #fff;
+text-decoration: underline;
+background-color: transparent;
+border:0px
+}
+
+.header-option:hover,.header-option:active,.header-option:focus{
+text-decoration: underline;
+background-color: transparent !important;
+}
+.dropdown .header-ul{
+margin-top:15px;
+background: #ccc;
+}
+.dropdown .header-ul li a{
+margin-left:0px!important;
+}
+
+/*DropDown*/
+
+/**table*/
+.invite-table tbody tr td{
+ transition: all .5s; 
+}
+
+
+/**table*/

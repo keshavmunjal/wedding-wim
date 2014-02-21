@@ -48,7 +48,24 @@
   <div class="container">
     <div class="row">
       <article class="col-md-6 col-lg-6 col-sm-6"> <img src="../img/logo.png" class="img-responsive" alt="" id="logo"> </article>
-      <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> Hello <?php echo $this->Session->read('user_name')?> </aside>
+      <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> 
+			<?php $userId = $this->Session->read('userId');
+				if($userId){
+			?>
+				<span class="dropdown text-left">
+					<button type="button" class="btn btn-default dropdown-toggle header-option" data-toggle="dropdown">
+						Hello <?php echo $this->Session->read('user_name')?> <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu clearfix header-ul" role="menu">
+					  <li><a href="<?php echo base_url.'home/sites/'.$websiteDetails['url']?>">Your Site</a></li>
+					  <li><a href="<?php echo  base_url;?>users/edit_event">Edit Site</a></li>
+					  <li><a href="<?php echo  base_url;?>users/step3">Invite Friends</a></li>
+							  <li><a href="<?php echo  base_url;?>users/invite_log">Invite Log</a></li>
+					  <li><a href="<?php echo  base_url;?>users/login_new">Logout</a></li>
+					</ul>
+				</span>
+			<?php }?> 
+		</aside>
     </div>
     <!--end row--> 
     
@@ -246,7 +263,10 @@
 		<div class="clearfix" style="overflow:hidden;">
 			<a href="#" class="cross-icon"><img src="<?php echo base_url;?>img/cross.jpg" class="pull-right cross"></a>
 			<br>
-			<p class="social"> select friends from <img src="<?php echo base_url;?>img/grey-facebook.jpg" style="margin-left:10px; margin-right:9px;"><img src="<?php echo base_url;?>img/google.jpg" style="margin-right:9px"> select friends from GMail.</p>
+			<p class="social"> Select friends from 
+			<a href="javascript:void(0)" onclick="FacebookInviteFriends();"><img src="<?php echo base_url;?>img/grey-facebook.jpg" style="margin-left:10px; margin-right:9px;"></a>
+			<a href="https://www.google.com/accounts/OAuthAuthorizeToken?oauth_token=<?php echo $token;?>"><img src="<?php echo base_url;?>img/google.jpg" style="margin-right:9px"></a>
+			Select friends from Gmail.</p>
 		</div>
 		<div class="clearfix" style="overflow:hidden"> <hr/></div>
 		<div class="email-txt">
@@ -254,15 +274,28 @@
 		</div>
 		<div class="choices">
 		<?php
+		$temp=0;
 			foreach($events as $e)
 			{
 		?>
-			<input type="checkbox">&nbsp;<?php print($e['Events']['event_title'])?>&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" class="event-checkbox" value="<?php print($e['Events']['id'])?>" <?php if(!$temp){echo "checked";$temp++;}?>>&nbsp;<?php print($e['Events']['event_title'])?>&nbsp;&nbsp;&nbsp;
 		<?php }?>	
 		
 		</div>
 		<div class="button">
 			<input type="image" id="sendinvite" src="<?php echo base_url;?>img/send-btn.jpg">
+		</div>
+		<div class="alert alert-danger fade in" id="event-error" style="display:none;">
+		  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+		  <p>Select an event to invite.</p>
+		</div>
+		<div class="alert alert-danger fade in" id="invite-error" style="display:none;">
+		  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+		  <p>Enter friends Email first</p>
+		</div>
+		<div class="alert alert-success fade in" id="invite-success" style="display:none;">
+		  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+		  <p>Invites Sent Successfully.</p>
 		</div>
 	</div>
 </div>
@@ -271,8 +304,8 @@
  <div class="col-md-12 content">
               <h3>YOU ARE CORDIALLY INVITED </h3>
               <address>
-              <p>To:  Sachin Kumar <br>
-                <time>25 Jan 2014 10:00 am</time>
+              <p>To:  Friend Email <br>
+                <time><?php echo date("j F, Y, g:i a")?></time>
               </p>
               </address>
             </div>
@@ -294,22 +327,18 @@
                     <div class="horz-border"></div>
                     <span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
                     <hgroup class="template-heading">
-                      <h2>Mehndi</h2>
+                      <h2><?php echo $events[0]['Events']['event_title']?></h2>
                       <h3>
-                        <date>Thursday 15 December 2013</date>
+                        <date><?php echo $events[0]['Events']['event_date_text']?></date>
                       </h3>
                     </hgroup>
                     <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
                     <div class="horz-border"></div>
                     <img src="../img/torino_google-map.png" class="img-circle  center-align map-image">
-                    <address>
-                    <p>Maharaja Grand Banquets<br>
-                      A6.28 Paschim Vikar<br>
-                      New Delhi<br>
-                      110076<br>
-                      <br>
+                    <address class="col-md-4 center-align">
+                    <p><?php echo $events[0]['Events']['venue']?>
                     </p>
-                    <p> RSVP: 8989893234</p>
+                    <p> RSVP: <?php echo $events[0]['Events']['rsvp']?></p>
                     </address>
                     <div class=" phone-direction  col-md-5 col-md-offset-2">
                       <p>Get direction on phone <span class="glyphicon glyphicon-phone "></span> </p>
@@ -469,10 +498,17 @@ var base_url = '<?php echo base_url;?>';
 				//alert($(this).val());
 				email = $(this).val();
 				var that = this;
-				$.get(base_url+'events/sendInvite','email='+email,function(res){
-					$(that).hide();
-					$(that).next('.glyphicon').fadeIn();
-					$(that).remove();
+				$('.event-checkbox').each(function(){
+					if(this.checked)
+					{
+						eventId = $(this).val();
+						$.get(base_url+'events/sendInvite','email='+email+'&eventId='+eventId,function(res){
+							//alert('sent successfully');
+							$(that).hide();
+							$(that).next('.glyphicon').fadeIn();
+							$(that).remove();
+						});
+					}
 				});
 			}
 		});
@@ -493,13 +529,34 @@ var base_url = '<?php echo base_url;?>';
 		$(".grey-box").slideToggle('slow');
 		
 	});
-	
 	$("#sendinvite").on('click',function(){
+	
 		var email = $('#friends_email').val();
-		var that = this;
-		$.get(base_url+'events/sendInvite','email='+email,function(res){
-			alert('sent sucessfully');
+		if(email==''|| email==null)
+		{
+			//alert("Enter friends email first");
+			$('#invite-error').fadeIn();
+			setTimeout(function(){$('#invite-error').fadeOut('slow')},3000);
+			return false;
+		}
+		flag = 0;
+		$('.event-checkbox').each(function(){
+			if(this.checked)
+			{
+				flag=1;
+				eventId = $(this).val();
+				$.get(base_url+'events/sendInvite','email='+email+'&eventId='+eventId,function(res){
+					//alert('sent successfully');
+					$('#invite-success').fadeIn();
+					setTimeout(function(){$('#invite-success').fadeOut('slow')},3000);
+				});
+			}
 		});
+		if(flag==0)
+		{
+			$('#event-error').fadeIn();
+			setTimeout(function(){$('#event-error').fadeOut('slow')},3000);
+		}
 	});
 
 });

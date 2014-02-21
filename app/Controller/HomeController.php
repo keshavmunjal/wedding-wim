@@ -81,6 +81,7 @@ class HomeController extends AppController {
 					//pr($events);
 					//pr($user);
 					//pr($mv);
+					$this->set('websiteDetails',$mv);
 					$this->set('wedding',$weddingdata[0]['Wedding_details']);
 					$this->set('events',$events);
 				}
