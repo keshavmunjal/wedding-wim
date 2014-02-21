@@ -368,7 +368,7 @@ var base_url  = '<?php echo base_url;?>';
 							  <li><a href="<?php echo  base_url;?>users/edit_event">Edit Site</a></li>
 							  <li><a href="<?php echo  base_url;?>users/step3">Invite Friends</a></li>
 							  <li><a href="<?php echo  base_url;?>users/invite_log">Invite Log</a></li>
-							  <a href="<?php echo  base_url;?>users/logout">Logout</a>
+							  <li><a href="<?php echo  base_url;?>users/logout">Logout</a></li>
 							</ul>
 						</span>
 					<?php }?>

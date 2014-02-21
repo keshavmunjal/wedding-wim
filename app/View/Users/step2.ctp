@@ -169,8 +169,12 @@ var editable = true;
 			setTimeout(function(){$('#alert').fadeOut();$("#my_modal").modal('hide');},3000);
 			var userId = msg;
 			$('#user_id').val(userId);
+			$(".datepicker" ).datepicker('enable');
+			$( "#wedding_date" ).datepicker('enable');
 			$("#wedding").ajaxForm();     
 			$("#wedding").submit();
+			$(".datepicker" ).datepicker('disable');
+			$( "#wedding_date" ).datepicker('disable');
 			
 			
 			
