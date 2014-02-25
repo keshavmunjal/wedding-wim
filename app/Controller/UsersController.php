@@ -312,6 +312,7 @@ class UsersController extends AppController {
 			
 			$this->set('websiteDetails',$websiteDetails[0]['Microwebsites']);
 			$this->set('events',$events);
+			$this->set('event',$events[0]['Events']);
 			
 		}
 		else
@@ -435,6 +436,15 @@ class UsersController extends AppController {
 		else
 		{
 			throw new ForbiddenException();
+		}
+	}
+	
+	public function rich_henna(){
+		$userId = $this->Session->read('userId');
+		$data = $this->Events->find('all', array('conditions' => array('user_id' => $userId)));
+		if(!empty($_POST['id'])){
+			$id = $_POST['id'];
+			$this->set('event', $data[$id]['Events']);
 		}
 	}
 	

@@ -22,7 +22,15 @@
 		<td style="border-width: 50px 38px; border-style:solid; border-color:#ccc;"> 
 			<table cellpadding="0" cellspacing="0" border="0" style="text-align:center; width:100%">
 				<tr>
-					<td><span style="border-right:1px solid #999; display:block; width:1px; height:50px; margin:0 auto"></span><img src="http://shaadiseason.in/img/mehndi.jpg" style="width: 160px;height: 139px;border-radius: 100%;"> </td>
+					<td><span style="border-right:1px solid #999; display:block; width:1px; height:50px; margin:0 auto">
+					<?php
+				if($event['event_image']!=''){
+					$src = "files/images/big/".$event['event_image'];
+				}else{
+					$src = "img/noimage.jpg";
+				}
+			?>
+					</span><img src="http://shaadiseason.in/<?= $src;?>" style="width: 160px;height: 139px;border-radius: 100%;"> </td>
 				</tr>
 				<tr>
 					<td style=" padding-top:20px;font-size: 30px;  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;font-weight: 500;line-height: 1.1"><?php echo $event['event_title']?> </td>

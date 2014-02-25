@@ -302,5 +302,18 @@ class EventsController extends AppController {
 		exit;
 	}
 	
+	public function delete_event(){
+		if($_POST['id']){
+			$userId = $this->Session->read('userId');
+			$del = $this->Events->delete($_POST['id']);
+			if($del){
+				echo "true";
+			}else{
+				echo "false";
+			}
+		}
+		exit;
+	
+	}
 	
 }

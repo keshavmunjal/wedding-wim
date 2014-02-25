@@ -67,7 +67,10 @@ class HomeController extends AppController {
 	public function sites($url='')
 	{
 		$userid = $this->Session->read('userId');//echo $userid;exit;
-		if($userid){
+		$data = $this->Users->find('all',array('conditions'=>array('id'=>$userid)));
+		$user = $data[0]['Users'];
+		$status = $user['status'];
+		if(($userid)&&($status==1)){
 			if($url!="")
 			{
 				$data = $this->Microwebsites->find('all',array('conditions'=>array('url'=>$url)));
@@ -75,8 +78,7 @@ class HomeController extends AppController {
 				if($data)
 				{
 					$weddingdata = $this->Wedding_details->find('all',array('conditions'=>array('user_id'=>$mv['user_id'])));
-					$data = $this->Users->find('all',array('conditions'=>array('id'=>$mv['user_id'])));
-					$user = $data[0]['Users'];
+					
 					$events = $this->Events->find('all',array('conditions'=>array('user_id'=>$mv['user_id'])));
 					//pr($events);
 					//pr($user);

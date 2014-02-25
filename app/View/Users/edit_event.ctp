@@ -318,7 +318,26 @@ var editable = true;
 					}
 				});
 		});
-
+		
+		$('.deleteEventButton').click(function(){
+			var id = "id="+this.id;
+			$.ajax({
+				url: '<?= base_url;?>events/delete_event',
+				data: id,
+				type: 'POST',		
+				context: $(this),
+				success: function(res){
+					//alert(res);
+					if(res=='true'){
+						this.closest('.event').fadeOut();
+						var num = $('#no_of_events').val();
+						$('#no_of_events').val(--num);
+					}
+				}
+			});
+						
+		});
+		
 		$(".map-image").click(function(){
 			if(editable)
 			{			
@@ -337,11 +356,7 @@ var editable = true;
 			}
 				
 		});
-		$('.deleteEventButton').click(function(){
-			$(this).closest('.event').fadeOut();
-			var num = $('#no_of_events').val();
-			$('#no_of_events').val(--num);
-		});
+		
 		
 		$('.address_input').keyup(function(){
 			codeAddress(this.id);
@@ -599,7 +614,7 @@ function initFileUploads(id){
             <?php for($i=0; $i<count($events); $i++){?>
 							<section name="event[]" id="event_<?php echo $i+1;?>" class="final-template border-gray event clearfix  ">
                 <div class="row">
-                  <button type="button" class="btn btn-default deleteEventButton hide edit_event edit_event_<?php echo $i+1;?>">Delete Event X</button>
+                  <button type="button" class="btn btn-default deleteEventButton hide edit_event edit_event_<?php echo $i+1;?>" id="<?php echo $events[$i]['Events']['id'];?>">Delete Event X</button>
                   <div class="col-md-12 text-center">
 										<input type="hidden" name="event_id[]" id="event_id<?php echo $i+1;?>" value="<?php echo $events[$i]['Events']['id'];?>"/>
                     <div class="horz-border"></div>

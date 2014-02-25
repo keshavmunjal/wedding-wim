@@ -190,9 +190,9 @@
   </button>
   <ul class="dropdown-menu clearfix" role="menu">
   <?php 
-	foreach($events as $e){
+	foreach($events as $key=>$value){
   ?>
-    <li><a href="#"><?php print($e['Events']['event_title']);?></a></li>
+    <li><a href="javascript:void(0);" id="<?php echo $key;?>" onclick="changeEvent(this.id);"><?php print($value['Events']['event_title']);?></a></li>
    <?php }?>
   </ul>
   
@@ -274,12 +274,12 @@
 		</div>
 		<div class="choices">
 		<?php
-		$temp=0;
+		$temp=0;$i=0;
 			foreach($events as $e)
 			{
 		?>
-			<input type="checkbox" class="event-checkbox" value="<?php print($e['Events']['id'])?>" <?php if(!$temp){echo "checked";$temp++;}?>>&nbsp;<?php print($e['Events']['event_title'])?>&nbsp;&nbsp;&nbsp;
-		<?php }?>	
+			<input type="checkbox" class="event-checkbox" id="check<?= $i;?>" value="<?php print($e['Events']['id'])?>" <?php if(!$temp){echo "checked";$temp++;}?>>&nbsp;<?php print($e['Events']['event_title'])?>&nbsp;&nbsp;&nbsp;
+		<?php $i++;}?>	
 		
 		</div>
 		<div class="button">
@@ -318,42 +318,40 @@
  
  
 
- <section class="final-template border-gray clearfix"  style="margin-top:0;">
- 
- 
-                <div class="row">
-                  <!--<button type="button" class="btn btn-default deleteEventButton ">Delete Event X</button>-->
-                  <div class="col-md-12 text-center">
-                    <div class="horz-border"></div>
-                    <span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
-                    <hgroup class="template-heading">
-                      <h2><?php echo $events[0]['Events']['event_title']?></h2>
-                      <h3>
-                        <date><?php echo $events[0]['Events']['event_date_text']?></date>
-                      </h3>
-                    </hgroup>
-                    <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
-                    <div class="horz-border"></div>
-                    <img src="../img/torino_google-map.png" class="img-circle  center-align map-image">
-                    <address class="col-md-4 center-align">
-                    <p><?php echo $events[0]['Events']['venue']?>
-                    </p>
-                    <p> RSVP: <?php echo $events[0]['Events']['rsvp']?></p>
-                    </address>
-                    <div class=" phone-direction  col-md-5 col-md-offset-2">
-                      <p>Get direction on phone <span class="glyphicon glyphicon-phone "></span> </p>
-                    </div>
-                  </div>
-                </div>
-                <br>
-				
-			
-				
-				
-				
-				
-				
-              </section>
+	<section class="final-template border-gray clearfix" id="invite_card" style="margin-top:0;">
+		<div class="row">
+			<!--<button type="button" class="btn btn-default deleteEventButton ">Delete Event X</button>-->
+			<div class="col-md-12 text-center">
+				<div class="horz-border"></div>
+				<span class="upload-photo"> 
+					<?php
+						if($event['event_image']!=''){
+							$src = "files/images/big/".$event['event_image'];
+						}else{
+							$src = "img/noimage.jpg";
+						}
+					?>
+					<img src="<?php echo base_url.$src;?>" class="img-circle img-responsive center-align main-template-image"> </span>
+				<hgroup class="template-heading">
+					<h2><?php echo $event['event_title']?></h2>
+					<h3>
+						<date><?php echo $event['event_date_text']?></date>
+					</h3>
+				</hgroup>
+				<div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
+				<div class="horz-border"></div>
+				<img src="../img/torino_google-map.png" class="img-circle  center-align map-image">
+				<address class="col-md-4 center-align">
+				<p><?php echo $event['venue']?>
+				</p>
+				<p> RSVP: <?php echo $event['rsvp']?></p>
+				</address>
+				<div class=" phone-direction  col-md-5 col-md-offset-2">
+					<p>Get direction on phone <span class="glyphicon glyphicon-phone "></span> </p>
+				</div>
+			</div>
+		</div>
+	</section>
 			  
 			  
 			  
@@ -480,6 +478,14 @@ FB.init({
 	message: 'Visit to out site, and create your own wedding site. http://shaadiseason.in/'
 	});
 	}
+	function changeEvent(id){
+		var data = "id="+id;
+		$.post('<?= base_url;?>+users/rich_henna', data, function(data){
+			$('#invite_card').html(data);
+			$('.event-checkbox').prop('checked', false);
+			$('#check'+id).prop('checked', true);
+		});
+	}
 $(document).ready(function(){
 var base_url = '<?php echo base_url;?>';
 
@@ -529,6 +535,7 @@ var base_url = '<?php echo base_url;?>';
 		$(".grey-box").slideToggle('slow');
 		
 	});
+	
 	$("#sendinvite").on('click',function(){
 	
 		var email = $('#friends_email').val();

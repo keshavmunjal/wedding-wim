@@ -217,7 +217,7 @@ var editable = true;
 						//window.location.href = "step3";
 						
 					}
-			});
+				});
 			};
 	}
 */	

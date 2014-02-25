@@ -2,7 +2,7 @@
 <header role = "banner">
   <div class="container">
     <div class="row">
-      <article class="col-md-6 col-lg-6 col-sm-6"> <img src="../img/logo.png" class="img-responsive" alt="" id="logo"> </article>
+      <article class="col-md-6 col-lg-6 col-sm-6"> <img src="<?= base_url;?>img/logo.png" class="img-responsive" alt="" id="logo"> </article>
       <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> <a href="<?php echo base_url;?>users/login_new">Login</a> <a href="#">Register</a> </aside>
     </div>
     <!--end row--> 
@@ -21,7 +21,7 @@
   
   <!-- slider header up and down code here and thumbnail here-->
   <div id="header-wrap" class="clearfix"> 
-    <!--<div id="up-down"> <img src="../img/arrow.png " width="40px;"></div>-->
+    <!--<div id="up-down"> <img src="<?= base_url;?>img/arrow.png " width="40px;"></div>-->
     <div class="gallery-wrap container ">
       <ol class="carousel-indicators row clearfix">
         <li data-target="#carousel-example-generica" data-slide-to="0" class="gallery__item col-lg-1 col-xs-1 col-sm-1 col-md-1">
@@ -33,7 +33,7 @@
                 <h3>Reach Heena</h3>
               </hgroup>
             </figcaption>
-            <img src="../img/thumb.jpg" class="img-responsive"></figure>
+            <img src="<?= base_url;?>img/thumb.jpg" class="img-responsive"></figure>
         </li>
         <li data-target="#carousel-example-generica" data-slide-to="1" class="gallery__item col-lg-1 col-xs-1 col-sm-1 col-md-1">
           <figure>
@@ -44,7 +44,7 @@
                 <h3>Reach Heena</h3>
               </hgroup>
             </figcaption>
-            <img src="../img/thumb.jpg" class="img-responsive"></figure>
+            <img src="<?= base_url;?>img/thumb.jpg" class="img-responsive"></figure>
         </li>
         <li data-target="#carousel-example-generica" data-slide-to="2" class="gallery__item col-lg-1 col-xs-1 col-sm-1 col-md-1">
           <figure>
@@ -55,7 +55,7 @@
                 <h3>Reach Heena</h3>
               </hgroup>
             </figcaption>
-            <img src="../img/thumb.jpg" class="img-responsive"></figure>
+            <img src="<?= base_url;?>img/thumb.jpg" class="img-responsive"></figure>
         </li>
         <li data-target="#carousel-example-generica" data-slide-to="3"  class="gallery__item col-lg-1 col-xs-1 col-sm-1 col-md-1">
           <figure>
@@ -66,7 +66,7 @@
                 <h3>Reach Heena</h3>
               </hgroup>
             </figcaption>
-            <img src="../img/thumb.jpg" class="img-responsive"></figure>
+            <img src="<?= base_url;?>img/thumb.jpg" class="img-responsive"></figure>
         </li>
         <li data-target="#carousel-example-generica" data-slide-to="4"  class="gallery__item col-lg-1 col-xs-1 col-sm-1 col-md-1">
           <figure>
@@ -77,7 +77,7 @@
                 <h3>Reach Heena</h3>
               </hgroup>
             </figcaption>
-            <img src="../img/thumb.jpg" class="img-responsive"></figure>
+            <img src="<?= base_url;?>img/thumb.jpg" class="img-responsive"></figure>
         </li>
         <li data-target="#carousel-example-generica" data-slide-to="5"  class="gallery__item col-lg-1 col-xs-1 col-sm-1 col-md-1">
           <figure>
@@ -88,7 +88,7 @@
                 <h3>Reach Heena</h3>
               </hgroup>
             </figcaption>
-            <img src="../img/thumb.jpg" class="img-responsive"></figure>
+            <img src="<?= base_url;?>img/thumb.jpg" class="img-responsive"></figure>
         </li>
         <li data-target="#carousel-example-generica" data-slide-to="6"  class="gallery__item col-lg-1 col-xs-1 col-sm-1 col-md-1">
           <figure>
@@ -99,7 +99,7 @@
                 <h3>Reach Heena</h3>
               </hgroup>
             </figcaption>
-            <img src="../img/thumb.jpg" class="img-responsive"></figure>
+            <img src="<?= base_url;?>img/thumb.jpg" class="img-responsive"></figure>
         </li>
         <li data-target="#carousel-example-generica" data-slide-to="7"  class="gallery__item col-lg-1 col-xs-1 col-sm-1 col-md-1">
           <figure>
@@ -110,7 +110,7 @@
                 <h3>Reach Heena</h3>
               </hgroup>
             </figcaption>
-            <img src="../img/thumb.jpg" class="img-responsive"></figure>
+            <img src="<?= base_url;?>img/thumb.jpg" class="img-responsive"></figure>
         </li>
         <li data-target="#carousel-example-generica" data-slide-to="8"  class="gallery__item col-lg-1 col-xs-1 col-sm-1 col-md-1">
           <figure>
@@ -121,7 +121,7 @@
                 <h3>Reach Heena</h3>
               </hgroup>
             </figcaption>
-            <img src="../img/thumb.jpg" class="img-responsive"></figure>
+            <img src="<?= base_url;?>img/thumb.jpg" class="img-responsive"></figure>
         </li>
       </ol>
     </div>
@@ -166,7 +166,7 @@
                     
                     <div class="col-md-12 text-center">
                       <div class="horz-border"></div>
-                      <span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
+                      <span class="upload-photo"> <img src="<?= base_url;?>img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
                       <hgroup class="template-heading">
                         <h2>Mehndi</h2>
                         <h3>
@@ -175,7 +175,7 @@
                       </hgroup>
                       <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
                       <div class="horz-border"></div>
-                      <img src="../img/torino_google-map.png" class="img-circle  center-align map-image">
+                      <img src="<?= base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image">
                       <address>
                       <p>Maharaja Grand Banquets<br>
                         A6.28 Paschim Vikar<br>
@@ -239,7 +239,7 @@
                     
                     <div class="col-md-12 text-center">
                       <div class="horz-border"></div>
-                      <span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
+                      <span class="upload-photo"> <img src="<?= base_url;?>img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
                       <hgroup class="template-heading">
                         <h2>Mehndi</h2>
                         <h3>
@@ -248,7 +248,7 @@
                       </hgroup>
                       <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
                       <div class="horz-border"></div>
-                      <img src="../img/torino_google-map.png" class="img-circle  center-align map-image">
+                      <img src="<?= base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image">
                       <address>
                       <p>Maharaja Grand Banquets<br>
                         A6.28 Paschim Vikar<br>
@@ -311,7 +311,7 @@
                     
                     <div class="col-md-12 text-center">
                       <div class="horz-border"></div>
-                      <span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
+                      <span class="upload-photo"> <img src="<?= base_url;?>img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
                       <hgroup class="template-heading">
                         <h2>Mehndi</h2>
                         <h3>
@@ -320,7 +320,7 @@
                       </hgroup>
                       <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
                       <div class="horz-border"></div>
-                      <img src="../img/torino_google-map.png" class="img-circle  center-align map-image">
+                      <img src="<?= base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image">
                       <address>
                       <p>Maharaja Grand Banquets<br>
                         A6.28 Paschim Vikar<br>
@@ -383,7 +383,7 @@
                     
                     <div class="col-md-12 text-center">
                       <div class="horz-border"></div>
-                      <span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
+                      <span class="upload-photo"> <img src="<?= base_url;?>img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
                       <hgroup class="template-heading">
                         <h2>Mehndi</h2>
                         <h3>
@@ -392,7 +392,7 @@
                       </hgroup>
                       <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
                       <div class="horz-border"></div>
-                      <img src="../img/torino_google-map.png" class="img-circle  center-align map-image">
+                      <img src="<?= base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image">
                       <address>
                       <p>Maharaja Grand Banquets<br>
                         A6.28 Paschim Vikar<br>
@@ -455,7 +455,7 @@
                     
                     <div class="col-md-12 text-center">
                       <div class="horz-border"></div>
-                      <span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
+                      <span class="upload-photo"> <img src="<?= base_url;?>img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
                       <hgroup class="template-heading">
                         <h2>Mehndi</h2>
                         <h3>
@@ -464,7 +464,7 @@
                       </hgroup>
                       <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
                       <div class="horz-border"></div>
-                      <img src="../img/torino_google-map.png" class="img-circle  center-align map-image">
+                      <img src="<?= base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image">
                       <address>
                       <p>Maharaja Grand Banquets<br>
                         A6.28 Paschim Vikar<br>
@@ -527,7 +527,7 @@
                     
                     <div class="col-md-12 text-center">
                       <div class="horz-border"></div>
-                      <span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
+                      <span class="upload-photo"> <img src="<?= base_url;?>img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
                       <hgroup class="template-heading">
                         <h2>Mehndi</h2>
                         <h3>
@@ -536,7 +536,7 @@
                       </hgroup>
                       <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
                       <div class="horz-border"></div>
-                      <img src="../img/torino_google-map.png" class="img-circle  center-align map-image">
+                      <img src="<?= base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image">
                       <address>
                       <p>Maharaja Grand Banquets<br>
                         A6.28 Paschim Vikar<br>
@@ -599,7 +599,7 @@
                     
                     <div class="col-md-12 text-center">
                       <div class="horz-border"></div>
-                      <span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
+                      <span class="upload-photo"> <img src="<?= base_url;?>img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
                       <hgroup class="template-heading">
                         <h2>Mehndi</h2>
                         <h3>
@@ -608,7 +608,7 @@
                       </hgroup>
                       <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
                       <div class="horz-border"></div>
-                      <img src="../img/torino_google-map.png" class="img-circle  center-align map-image">
+                      <img src="<?= base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image">
                       <address>
                       <p>Maharaja Grand Banquets<br>
                         A6.28 Paschim Vikar<br>
@@ -671,7 +671,7 @@
                     
                     <div class="col-md-12 text-center">
                       <div class="horz-border"></div>
-                      <span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
+                      <span class="upload-photo"> <img src="<?= base_url;?>img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
                       <hgroup class="template-heading">
                         <h2>Mehndi</h2>
                         <h3>
@@ -680,7 +680,7 @@
                       </hgroup>
                       <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
                       <div class="horz-border"></div>
-                      <img src="../img/torino_google-map.png" class="img-circle  center-align map-image">
+                      <img src="<?= base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image">
                       <address>
                       <p>Maharaja Grand Banquets<br>
                         A6.28 Paschim Vikar<br>
@@ -744,7 +744,7 @@
                     
                     <div class="col-md-12 text-center">
                       <div class="horz-border"></div>
-                      <span class="upload-photo"> <img src="../img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
+                      <span class="upload-photo"> <img src="<?= base_url;?>img/mehndi.jpg" class="img-circle img-responsive center-align main-template-image"> </span>
                       <hgroup class="template-heading">
                         <h2>Mehndi</h2>
                         <h3>
@@ -753,7 +753,7 @@
                       </hgroup>
                       <div class="calendar center-align"> <span class="glyphicon glyphicon-calendar"></span> </div>
                       <div class="horz-border"></div>
-                      <img src="../img/torino_google-map.png" class="img-circle  center-align map-image">
+                      <img src="<?= base_url;?>img/torino_google-map.png" class="img-circle  center-align map-image">
                       <address>
                       <p>Maharaja Grand Banquets<br>
                         A6.28 Paschim Vikar<br>
@@ -806,7 +806,7 @@
 </section>
 <div class="next_prev_arrow"> 
   <!-- Controls --> 
-  <a class="left carousel-control" href="#carousel-example-generica" data-slide="prev"> <img src="../img/prev.png"  class="img-responsive"></span> </a> <a class="right carousel-control" href="#carousel-example-generica" data-slide="next"> <img src="../img/next.png"  class="img-responsive"> </a> </div>
+  <a class="left carousel-control" href="#carousel-example-generica" data-slide="prev"> <img src="<?= base_url;?>img/prev.png"  class="img-responsive"></span> </a> <a class="right carousel-control" href="#carousel-example-generica" data-slide="next"> <img src="<?= base_url;?>img/next.png"  class="img-responsive"> </a> </div>
   
   <script>
   var base_url = '<?php echo base_url;?>';

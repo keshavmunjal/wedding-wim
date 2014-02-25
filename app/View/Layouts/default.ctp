@@ -49,7 +49,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 		echo $this->Html->css('custom');
-		//echo $this->Html->script('map');
+		//echo $this->Html->script('jquery.cookie');
 		//echo $this->Html->script('jquery.validate.min');
 		
 	?>
