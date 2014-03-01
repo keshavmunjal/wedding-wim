@@ -3,7 +3,12 @@
   <div class="container">
     <div class="row">
       <article class="col-md-6 col-lg-6 col-sm-6"> <img src="<?= base_url;?>img/logo.png" class="img-responsive" alt="" id="logo"> </article>
-      <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> <a href="<?php echo base_url;?>users/login_new">Login</a> <a href="#">Register</a> </aside>
+      <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> 
+			<?php if($user){?>
+				<span>Welcome <?= $user;?></span>
+			<?php }else{?>
+				<a href="<?php echo base_url;?>users/login_new">Login/Register</a></aside>
+			<?php  }?>
     </div>
     <!--end row--> 
     

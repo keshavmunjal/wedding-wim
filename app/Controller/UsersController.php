@@ -208,11 +208,17 @@ class UsersController extends AppController {
 		if($user)
 		{
 			//activate user account
-			$this->Users->updateAll(array('status'=>"'1'"), array('id = '=>$user[0]['Users']));
-			$userdetail = $user[0]['Users'];
-			$this->Session->write('userId',$userdetail['id']);
-			$this->Session->write('user_name',$userdetail['user_name']);
-			$this->redirect(array("controller"=>"users","action"=>"step3"));
+			$this->Users->updateAll(array('status'=>"'1'"), array('id = '=>$user[0]['Users']));			
+			$events = $this->Events->find('all', array('conditions' => array('user_id' => $userdetail['id'])));
+			if(empty($events)){
+				$this->Session->setFlash(__('The user has been saved.'));
+			}else{
+				$userdetail = $user[0]['Users'];
+				$this->Session->write('userId',$userdetail['id']);
+				$this->Session->write('user_name',$userdetail['user_name']);				
+				$this->redirect(array("controller"=>"users","action"=>"step3"));
+			}
+			
 		}
 		else
 		{
@@ -228,6 +234,10 @@ class UsersController extends AppController {
 	
 	}
 	public function step1(){
+		$user = $this->Session->read('user_name');//echo $user;exit;
+		if($user){
+			$this->set('user', $user);
+		}
 		if($this->request->is('post'))
 		{
 			$user = $this->request->data;
@@ -236,7 +246,10 @@ class UsersController extends AppController {
 		}
 	}
 	public function step2(){
-	
+		$user = $this->Session->read('user_name');//echo $user;exit;
+		if($user){
+			$this->set('user', $user);
+		}
 		$themeId = $this->Session->read('Users.themeId');//getting theme for current user
 		if(empty($themeId))
 		{
@@ -358,12 +371,12 @@ class UsersController extends AppController {
 				$this->Session->write('user_name',$user['user_name']);
 				$data = $this->Microwebsites->find('all',array('conditions'=>array('user_id'=>$user['id'])));
 				$url = $data[0]['Microwebsites']['url'];
-				echo $url;
-				/*$this->redirect(array(
-					'controller' => 'home',
-					'action' => 'sites/'.$url,
-					
-				));*/
+				if($data[0]['Microwebsites']['theme_id']!=0){
+					$res = $url;
+				}else{
+					$res = 'new_user';
+				}
+				echo $res;				
 			}
 			else
 			{

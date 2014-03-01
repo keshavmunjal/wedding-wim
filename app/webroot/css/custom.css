@@ -1038,6 +1038,25 @@ margin-left:0px!important;
 .invite-table tbody tr td{
  transition: all .5s; 
 }
-
-
 /**table*/
+#div-btn{margin-top: 125px;text-align: center;}
+.btn-register{width: 265px;height: 50px;font-size: 20px;border: 2px solid #007ee5;}
+.place::-webkit-input-placeholder {color: #000 !important;}
+ /*login page*/
+.login-container{
+ margin-top:3%;
+}
+#headding-line{
+font-family: 'Tangerine', serif;
+font-size: 48px;
+text-shadow: 4px 4px 4px #aaa;
+}
+.form-section{
+ display:none;
+ overflow:hidden;
+}
+.register-btn{
+ width:49%;
+}
+
+/*login page*/

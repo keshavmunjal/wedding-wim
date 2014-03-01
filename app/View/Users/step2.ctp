@@ -528,7 +528,7 @@ function initFileUploads(id){
 					</form>
 				</section>
 				<!--<section class="col-md-6">
-					<form role="form" method="post" id="loginForm">
+					<form role="form" method="post" id="loginForm" novalidate="novalidate">
 					  <div class="form-group">
 						<label for="exampleInputEmail1">Email address</label>
 						<input type="email" name="loginEmail" class="form-control" id="loginEmail" placeholder="Enter email">
@@ -560,8 +560,11 @@ function initFileUploads(id){
     <div class="row">
       <article class="col-md-6 col-lg-6 col-sm-6"> <img src="<?php echo base_url;?>img/logo.png" class="img-responsive" alt="" id="logo"> </article>
       <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> 
-		<a href="<?php echo base_url;?>users/login_new">Login</a> 
-		<a href="#my_modal" data-toggle="modal" data-target="#my_modal">Register</a> 
+			<?php if($user){?>
+				<span>Welcome <?= $user;?></span>
+			<?php }else{?>
+				<a href="<?php echo base_url;?>users/login_new">Login/Register</a></aside>
+			<?php  }?>
 		<a href="javascript:void(0)" id="edit-mode-link">Edit Mode</a> 
 		<a href="javascript:void(0)" id="publish">Publish</a> 
 	  </aside>
