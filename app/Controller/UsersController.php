@@ -209,9 +209,13 @@ class UsersController extends AppController {
 		{
 			//activate user account
 			$this->Users->updateAll(array('status'=>"'1'"), array('id = '=>$user[0]['Users']));			
-			$events = $this->Events->find('all', array('conditions' => array('user_id' => $userdetail['id'])));
+			$events = $this->Events->find('all', array('conditions' => array('user_id' => $user[0]['Users']['id'])));
 			if(empty($events)){
-				$this->Session->setFlash(__('The user has been saved.'));
+				
+				$this->Session->setFlash('Your account has been activated. Please login to continue.');
+				$this->redirect(array("controller"=>"users","action"=>"login_new"));
+				
+
 			}else{
 				$userdetail = $user[0]['Users'];
 				$this->Session->write('userId',$userdetail['id']);

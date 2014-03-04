@@ -562,8 +562,9 @@ function initFileUploads(id){
       <aside class="col-md-6 col-lg-6  col-sm-6 text-right" id="user-input"> 
 			<?php if($user){?>
 				<span>Welcome <?= $user;?></span>
+				<a href="<?php echo base_url;?>users/logout">Logout</a>
 			<?php }else{?>
-				<a href="<?php echo base_url;?>users/login_new">Login/Register</a></aside>
+				<a href="<?php echo base_url;?>users/login_new">Login/Register</a>
 			<?php  }?>
 		<a href="javascript:void(0)" id="edit-mode-link">Edit Mode</a> 
 		<a href="javascript:void(0)" id="publish">Publish</a> 

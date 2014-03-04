@@ -296,9 +296,9 @@
 						
 					  </section>
 					</div>
-					<!--<div class="col-md-9 text-center">
-						<p>or &nbsp;<a href="#">Signin</a><p>
-					</div>-->
+					<div class="col-md-9 text-center">
+						<p><?php echo $this->Session->flash();?><p>
+					</div>
 				</section>
 			</div>
 
