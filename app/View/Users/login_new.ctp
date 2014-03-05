@@ -33,75 +33,144 @@
     }
   $(document).ready(function () {	
 	$('#form').validate({
-        rules: {
-            name: {
-                minlength: 3,
-                maxlength: 15,
-                required: true
-            },
-            email: {
-                minlength: 3,
-                email: true,
-                required: true
-            },
-						password: {
-											minlength: 4,
-											required: true
-									},
-						url:{
-							required: true,
-							remote: {
-													url: base_url+'users/checkurl',
-													type: 'GET',
-													data:
-								{
-									url: function()
-									{
-										return $('#url').val();
-									}
-								}
-											}
-						},
+    rules: {
+        name: {
+            minlength: 3,
+            maxlength: 15,
+            required: true
+        },
+        email: {
+            minlength: 3,
+            email: true,
+            required: true
+        },
+				password: {
+									minlength: 4,
+									required: true
 							},
-					messages: {
-						name: {
-							required:"Please Enter Your Name"
-						},
-						email: {
-							required:"Please Provide Your Email"
-						},
-						password: {
-							minlength:"Please Provide Secure Password",
-							required:"Please Provide Password"
-						},
-						url:{
-							required:"Choose a unique url for your site",
-							remote: "This Url is already taken.",
-						},
-						
+				url:{
+					required: true,
+					remote: {
+											url: base_url+'users/checkurl',
+											type: 'GET',
+											data:
+						{
+							url: function()
+							{
+								return $('#url').val();
+							}
+						}
+									}
+				},
+				check_form:{
+					required: true
+				},
 					},
-							highlight: function(element) {
-									$(element).closest('.form-group').addClass('has-error');
-							},
-							unhighlight: function(element) {
-									$(element).closest('.form-group').removeClass('has-error');
-							},
-							errorElement: 'span',
-							errorClass: 'help-block',
-							errorPlacement: function(error, element) {
-									if(element.parent('.input-group').length) {
-											error.insertAfter(element.parent());
-									} else {
-											error.insertAfter(element);
-									}
-							},
-					submitHandler: function(form) {
-						//calling function for submitting data
-						saveUser();
-					}
-					});
+			messages: {
+				name: {
+					required:"Please Enter Your Name"
+				},
+				email: {
+					required:"Please Provide Your Email"
+				},
+				password: {
+					minlength:"Please Provide Secure Password",
+					required:"Please Provide Password"
+				},
+				url:{
+					required:"Choose a unique url for your site",
+					remote: "This Url is already taken.",
+				},
+				check_form:{
+					required:"Please agree to terms and conditions.",							
+				},
+			},
+					highlight: function(element) {
+							$(element).closest('.form-group').addClass('has-error');
+					},
+					unhighlight: function(element) {
+							$(element).closest('.form-group').removeClass('has-error');
+					},
+					errorElement: 'span',
+					errorClass: 'help-block',
+					errorPlacement: function(error, element) {
+							if(element.parent('.input-group').length) {
+									error.insertAfter(element.parent());
+							} else {
+									error.insertAfter(element);
+							}
+					},
+			submitHandler: function(form) {
+				//calling function for submitting data
+				
+				var action = $('#action').val();
+				if(action==0){
+					if($('.form-section').css('display')=='none')
+						{
+						$('.main-middle').animate({margin:'0px'},function(){
+							$("#headding-line").slideToggle(function(){$(".form-section").slideToggle('slow');});
+							});
+						$('#action').val('1');
+						}
+						else
+						{
+							$(".form-section").slideToggle('slow',function(){
+							$('.main-middle').animate({margin:'80px 0px 0px'},function(){
+								$("#headding-line").slideToggle();
+							});
+							});
+						}
+				}else{
+					saveUser();
+					//$('#form').submit();
+				}
+			}
+	});
 	
-	$("#register-btn").on('click',function(){
+	$('#loginForm').validate({
+        rules: {
+            loginEmail: {
+				email: true,
+                required: true
+            },
+			loginPassword: {
+                required: true
+            }
+        },
+		messages: {
+			loginEmail: {
+				email:"Please Provide Email",
+				required:"Please Provide Valid Email"
+			},
+			loginPassword: {
+				required:"Please Provide Password"
+			},
+			
+		},
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            if(element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+        },
+		 submitHandler: function(form) {
+			//calling function for submitting data
+			//saveUser();
+			login();
+		}
+    });
+	/*$("#form").on('submit',function(){
+	
+	alert("sdf");return false;
 		var action = $('#action').val();
 		if(action==0){
 			if($('.form-section').css('display')=='none')
@@ -123,8 +192,7 @@
 			$('#form').submit();
 		}
 			  
-				
-			});
+			});*/
 		//setting height of inner content
 		function setHeight(){
 			var height = window.innerHeight;
@@ -151,8 +219,8 @@
 
       }
     });
-    $('#login').click(function () {
-			var email = $('#loginEmail').val();
+  function login(){
+		var email = $('#loginEmail').val();
 			var password = $('#loginPassword').val();
 			var data = "loginEmail="+email+"&loginPassword="+password;
 			$.ajax({
@@ -174,8 +242,8 @@
 						window.location.href = '<?php echo  base_url;?>home/sites/'+res;						
 					}
 				}
-			});								
-    });
+			});
+	}
 		function saveUser(){		
 		var data = 'user_name='+$("#name").val()+'&email='+$("#email").val()+'&password='+$("#password").val()+'&url='+$("#url").val()+'&themeId='+$("#themeId").val();
 		$.post(base_url+'users/create',data,function(msg){
@@ -223,40 +291,44 @@
 			<img id="image2" src="<?php echo base_url;?>img/getbeta_hover.png" class="image" />
 			<div id="fail" class="" style="display:none;text-align:center;color:red;margin:15px 0px;">Invalid email and password. Try again.</div>
 			<div class="modal fade bs-modal-lg"  id="my_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg" style="width:400px;">
+	<div class="modal-dialog modal-lg" style="width:350px;">
 		<div class="modal-content">
-		  <div class="modal-header">
+		  <div class="modal-header custom-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<h4 class="modal-title">LogIn</h4>
+			<h4 class="modal-title login-title" >LogIn</h4>
 		  </div>
-		  <div class="modal-body">
+		  <div class="modal-body login-body">
 			<div id="fail" class="" style="display:none;text-align:center;color:red;margin:15px 0px;"></div>
 			<div class="clo-xs-12">
-				<section class="col-md-10 center-align">
-					<div class="form-group">
-						<label for="exampleInputEmail1">Email address</label>
-						<input type="email" name="loginEmail" class="form-control" id="loginEmail" placeholder="Enter email">
-					  </div>
-					  <div class="form-group">
-						<label for="exampleInputPassword1">Password</label>
-						<input type="password" name="loginPassword" class="form-control" id="loginPassword" placeholder="Password">
-					  </div>
-					  <div class="checkbox">
-						<label>
-						  <input type="checkbox"> Remember me
-						</label>
-					  </div>
-					  <button class="btn btn-default" id="login">Let me in</button>					
+				<section class="center-align">
+					<form id="loginForm" >
+						<div class="form-group">						
+							<input type="email" name="loginEmail" class="form-control login-input place" id="loginEmail" placeholder="Enter email">
+							</div>
+							<div class="form-group">						
+							<input type="password" name="loginPassword" class="form-control login-input place" id="loginPassword" placeholder="Password">
+							</div>
+							<div class="checkbox">
+							<label class="remember">
+								<input type="checkbox"> Remember me
+							</label>
+							</div>
+							<button class="btn btn-primary btn-lg btn-block" id="login">Let me in</button>					
+							<p class="text-center" style="padding: 8px 0px;">
+								<a href="#" style="color: #2895f1;font-size: 12px;">Forget Your Password?</a>
+							</p>
+					</form>
 				</section>
 			</div>
 		  </div>
-		  <div class="modal-footer">
+		  <!--<div class="modal-footer">
 			<div class="alert alert-danger fade in" id="alert-login" style="text-align:center;display:none">Invalid email and password. Try again.</div>
-		  </div>
+		  </div>-->
 		</div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 			<div class="container login-container">
+			<form role="form" id="form" method="post" >
 				<section class="col-md-6">
 					<img src="<?php echo base_url;?>img/card.png" class="img-responsive center-align"/>
 				</section>
@@ -268,7 +340,6 @@
 					<div class="col-md-9">
 					  <section class="col-md-10 center-align form-section">
 						<input type="hidden" id="action" value="0" />
-						<form role="form" id="form" method="post" >
 						  <div class="form-group">
 							<input name="name" type="text" class="form-control place" id="name" placeholder="Enter Name">
 						  </div>
@@ -284,14 +355,13 @@
 							<input type="hidden" id="action" value="0" />
 						  <div class="checkbox">
 							<label>
-							  <input type="checkbox"> Check me out
+							  <input type="checkbox" id="check_form" name="check_form"> I agree to <a href="javascript:void(0);">terms and conditions</a>;
 							</label>
 						  </div>
-						</form>
 					  </section>
-						<div class="alert alert-danger fade in" id="alert-register" style="text-align:center;display:none"></div>
+						<div class="alert alert-danger fade in" id="alert-register" type="submit" style="text-align:center;display:none"></div>
 					  <section  class="col-md-10 center-align">
-						<button id="register-btn" class="btn btn-primary btn-lg register-btn center-align">Register</button>
+						<button id="register-btn" class="btn btn-primary btn-lg register-btn center-align" type="submit">Register</button>
 						<button id="login-btn" class="btn btn-info btn-lg register-btn center-align pull-right" data-toggle="modal" data-target="#my_modal">Log-In</button>
 						
 					  </section>
@@ -300,6 +370,7 @@
 						<p><?php echo $this->Session->flash();?><p>
 					</div>
 				</section>
+			</form>
 			</div>
 
 			<div class="clo-xs-12 align_center" id="preloader" style="display:none;">
